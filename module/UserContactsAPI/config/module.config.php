@@ -2,17 +2,17 @@
 return [
     'service_manager' => [
         'factories' => [
-            \Internet\V1\Rest\Contacts\ContactsResource::class => \Internet\V1\Rest\Contacts\ContactsResourceFactory::class,
+            \UserContactsAPI\V1\Rest\Usercontacts\UsercontactsResource::class => \UserContactsAPI\V1\Rest\Usercontacts\UsercontactsResourceFactory::class,
         ],
     ],
     'router' => [
         'routes' => [
-            'internet.rest.contacts' => [
+            'user-contacts-api.rest.usercontacts' => [
                 'type' => 'Segment',
                 'options' => [
-                    'route' => '/internet/users/:id/contacts',
+                    'route' => '/company/users/:id/contacts',
                     'defaults' => [
-                        'controller' => 'Internet\\V1\\Rest\\Contacts\\Controller',
+                        'controller' => 'UserContactsAPI\\V1\\Rest\\Usercontacts\\Controller',
                     ],
                 ],
             ],
@@ -20,18 +20,17 @@ return [
     ],
     'zf-versioning' => [
         'uri' => [
-            0 => 'internet.rest.contacts',
+            0 => 'user-contacts-api.rest.usercontacts',
         ],
     ],
     'zf-rest' => [
-        'Internet\\V1\\Rest\\Contacts\\Controller' => [
-            'listener' => \Internet\V1\Rest\Contacts\ContactsResource::class,
-            'route_name' => 'internet.rest.contacts',
-            'route_identifier_name' => 'contacts_id',
-            'collection_name' => 'contacts',
+        'UserContactsAPI\\V1\\Rest\\Usercontacts\\Controller' => [
+            'listener' => \UserContactsAPI\V1\Rest\Usercontacts\UsercontactsResource::class,
+            'route_name' => 'user-contacts-api.rest.usercontacts',
+            'route_identifier_name' => 'usercontacts_id',
+            'collection_name' => 'usercontacts',
             'entity_http_methods' => [
                 0 => 'POST',
-                1 => 'GET',
             ],
             'collection_http_methods' => [
                 0 => 'POST',
@@ -39,52 +38,52 @@ return [
             'collection_query_whitelist' => [],
             'page_size' => 25,
             'page_size_param' => null,
-            'entity_class' => \Internet\V1\Rest\Contacts\ContactsEntity::class,
-            'collection_class' => \Internet\V1\Rest\Contacts\ContactsCollection::class,
-            'service_name' => 'contacts',
+            'entity_class' => \UserContactsAPI\V1\Rest\Usercontacts\UsercontactsEntity::class,
+            'collection_class' => \UserContactsAPI\V1\Rest\Usercontacts\UsercontactsCollection::class,
+            'service_name' => 'Usercontacts',
         ],
     ],
     'zf-content-negotiation' => [
         'controllers' => [
-            'Internet\\V1\\Rest\\Contacts\\Controller' => 'HalJson',
+            'UserContactsAPI\\V1\\Rest\\Usercontacts\\Controller' => 'HalJson',
         ],
         'accept_whitelist' => [
-            'Internet\\V1\\Rest\\Contacts\\Controller' => [
-                0 => 'application/vnd.internet.v1+json',
+            'UserContactsAPI\\V1\\Rest\\Usercontacts\\Controller' => [
+                0 => 'application/vnd.user-contacts-api.v1+json',
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ],
         ],
         'content_type_whitelist' => [
-            'Internet\\V1\\Rest\\Contacts\\Controller' => [
-                0 => 'application/vnd.internet.v1+json',
+            'UserContactsAPI\\V1\\Rest\\Usercontacts\\Controller' => [
+                0 => 'application/vnd.user-contacts-api.v1+json',
                 1 => 'application/json',
             ],
         ],
     ],
     'zf-hal' => [
         'metadata_map' => [
-            \Internet\V1\Rest\Contacts\ContactsEntity::class => [
+            \UserContactsAPI\V1\Rest\Usercontacts\UsercontactsEntity::class => [
                 'entity_identifier_name' => 'id',
-                'route_name' => 'internet.rest.contacts',
-                'route_identifier_name' => 'contacts_id',
+                'route_name' => 'user-contacts-api.rest.usercontacts',
+                'route_identifier_name' => 'usercontacts_id',
                 'hydrator' => \Zend\Hydrator\ArraySerializable::class,
             ],
-            \Internet\V1\Rest\Contacts\ContactsCollection::class => [
+            \UserContactsAPI\V1\Rest\Usercontacts\UsercontactsCollection::class => [
                 'entity_identifier_name' => 'id',
-                'route_name' => 'internet.rest.contacts',
-                'route_identifier_name' => 'contacts_id',
+                'route_name' => 'user-contacts-api.rest.usercontacts',
+                'route_identifier_name' => 'usercontacts_id',
                 'is_collection' => true,
             ],
         ],
     ],
     'zf-content-validation' => [
-        'Internet\\V1\\Rest\\Contacts\\Controller' => [
-            'input_filter' => 'Internet\\V1\\Rest\\Contacts\\Validator',
+        'UserContactsAPI\\V1\\Rest\\Usercontacts\\Controller' => [
+            'input_filter' => 'UserContactsAPI\\V1\\Rest\\Usercontacts\\Validator',
         ],
     ],
     'input_filter_specs' => [
-        'Internet\\V1\\Rest\\Contacts\\Validator' => [
+        'UserContactsAPI\\V1\\Rest\\Usercontacts\\Validator' => [
             0 => [
                 'required' => true,
                 'validators' => [
@@ -95,7 +94,7 @@ return [
                 ],
                 'filters' => [],
                 'name' => 'phone_number',
-                'description' => 'Phone number of user.',
+                'description' => 'Users phone number.',
                 'field_type' => 'string',
                 'error_message' => 'Invalid phone number',
             ],

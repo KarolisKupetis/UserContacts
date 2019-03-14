@@ -25,5 +25,5 @@ return [
     'ZF\\Rpc',
     'ZF\\Versioning',
     'Application',
-    'Internet',
+    'UserContactsAPI',
 ];

@@ -1,5 +1,5 @@
 <?php
-namespace Internet;
+namespace UserContactsAPI;
 
 use ZF\Apigility\Provider\ApigilityProviderInterface;
 
