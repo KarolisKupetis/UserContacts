@@ -14,6 +14,7 @@ class ContactsResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        return new ApiProblem(404,'POST method not allowed');
+        $productId = $this->getEvent()->getRouteMatch()->getParam('id');
+
     }
 }

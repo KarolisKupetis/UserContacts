@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../Visma_UserContacts/.idea/Visma_UserContacts.iml" filepath="$PROJECT_DIR$/../Visma_UserContacts/.idea/Visma_UserContacts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../UserContacts/.idea/UserContacts.iml" filepath="$PROJECT_DIR$/../UserContacts/.idea/UserContacts.iml" />
     </modules>
   </component>
 </project>
