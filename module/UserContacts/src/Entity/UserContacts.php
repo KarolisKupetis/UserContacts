@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class UserContacts
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -35,8 +34,8 @@ class UserContacts
 
     /**
      * @var int
-     * @OneToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="Users\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $userId;
 

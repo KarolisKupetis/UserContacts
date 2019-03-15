@@ -1,5 +1,5 @@
 <?php
-namespace UserContacts;
+namespace Users;
 
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Zend\ServiceManager\Factory\InvokableFactory;
