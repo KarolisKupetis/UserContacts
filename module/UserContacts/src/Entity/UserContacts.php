@@ -3,10 +3,10 @@
 namespace UserContacts\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Users\Entity\User;
 
 /**
- * Class User
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="UserContacts\Repository\UserContactsRepository")
  * @ORM\Table(name="user_contacts")
  */
 class UserContacts
@@ -18,7 +18,6 @@ class UserContacts
      * @var int
      */
     private $id;
-
 
     /**
      * @var string
@@ -33,73 +32,72 @@ class UserContacts
     private $phoneNumber;
 
     /**
-     * @var int
+     * @var User
      * @ORM\OneToOne(targetEntity="Users\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $userId;
-
+    private $user;
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
+     * @param $id
      */
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
 
     /**
-     * @return mixed
+     * @return User
      */
-    public function getUserId()
+    public function getUser(): User
     {
-        return $this->userId;
+        return $this->user;
     }
 
     /**
-     * @param mixed $userId
+     * @param $user
      */
-    public function setUserId($userId)
+    public function setUser($user): void
     {
-        $this->userId = $userId;
+        $this->user = $user;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getAddress()
+    public function getAddress(): string
     {
         return $this->address;
     }
 
     /**
-     * @param mixed $address
+     * @param $address
      */
-    public function setAddress($address)
+    public function setAddress($address): void
     {
         $this->address = $address;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getPhoneNumber()
+    public function getPhoneNumber(): string
     {
         return $this->phoneNumber;
     }
 
     /**
-     * @param mixed $phoneNumber
+     * @param $phoneNumber
      */
-    public function setPhoneNumber($phoneNumber)
+    public function setPhoneNumber($phoneNumber): void
     {
         $this->phoneNumber = $phoneNumber;
     }
