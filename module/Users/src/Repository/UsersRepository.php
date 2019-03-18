@@ -17,7 +17,7 @@ class UsersRepository extends EntityRepository
         return $this->createQueryBuilder('a')
             ->select()
             ->where('a.id = :name')
-            ->setParameter('name',$userId)
+            ->setParameter('name', $userId)
             ->getQuery()
             ->getOneOrNullResult();
     }

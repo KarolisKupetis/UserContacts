@@ -1,9 +1,15 @@
 <?php
 
+namespace UserContactsServiceTest\Service;
+
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use UserContacts\Exceptions\EmptyAdressException;
+use UserContacts\Exceptions\ExistingUserContactsException;
+use UserContacts\Exceptions\InvalidPhoneNumberException;
 use UserContacts\Repository\UserContactsRepository;
 use UserContacts\Creator\UserContactsCreator;
+use UserContacts\Validator\UserContactsValidator;
 use Users\Service\UserService;
 use UserContacts\Service\UserContactsService;
 use UserContacts\Entity\UserContacts;
@@ -22,6 +28,9 @@ class UserContactsServiceTest extends TestCase
     /** @var UserContactsService */
     private $userContactsService;
 
+    /** @var UserContactsValidator */
+    private $userContactsValidator;
+
     protected function setUp()
     {
         $this->userContactsRepository = $this->getMockBuilder(UserContactsRepository::class)
@@ -36,12 +45,29 @@ class UserContactsServiceTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->userContactsService = new UserContactsService($this->userContactsRepository,$this->userContactsCreator,$this->userService);
+        $this->userContactsValidator = $this->getMockBuilder(UserContactsValidator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->userContactsService = new UserContactsService($this->userContactsRepository, $this->userContactsCreator,
+            $this->userService, $this->userContactsValidator);
     }
 
-    public function testCreateUserContacts():void
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function testCreateUserContacts(): void
     {
+        $userId = 1;
         $userContactsId = 5;
+
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidPhoneNumber')
+            ->willReturn(true);
+
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidAddress')
+            ->willReturn(true);
 
         $this->userService->expects($this->once())
             ->method('getById')
@@ -54,26 +80,90 @@ class UserContactsServiceTest extends TestCase
             ->method('insertUserContacts')
             ->willReturn($userContactsId);
 
-        $userContactsParam = ['id'=>5,'address'=>'test','phoneNumber'=>8666];
+        $userContactsParam = ['id' => 5, 'address' => 'test', 'phoneNumber' => 8666];
 
-        $this->assertEquals(5,$this->userContactsService->createUserContacts($userContactsParam));
+        $this->assertEquals(5, $this->userContactsService->createUserContacts($userContactsParam));
     }
 
-    public function testCreateUserContactsThrowsExceptionOnDuplicateUserContacts():void
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function testCreateUserContactsOnDuplicateUserContacts(): void
     {
-        $this->userService->expects($this->once())
-            ->method('getById');
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidPhoneNumber')
+            ->willReturn(true);
+
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidAddress')
+            ->willReturn(true);
 
         $this->userContactsRepository->expects($this->once())
             ->method('findByUserId')
             ->willReturn(new UserContacts());
 
+        $this->userService->expects($this->never())
+            ->method('getById');
+
         $this->userContactsCreator->expects($this->never())
             ->method('insertUserContacts');
 
-        $userContactsParam = ['id'=>5,'address'=>'test','phoneNumber'=>8666];
+        $userContactsParam = ['id' => 5, 'address' => 'test', 'phoneNumber' => 8666];
 
-        $this->expectException(\UserContacts\Exceptions\ExistingUserContactsException::class);
+        $this->expectException(ExistingUserContactsException::class);
+
+        $this->userContactsService->createUserContacts($userContactsParam);
+
+    }
+
+    public function testCreateUserContactsExceptionOnWrongPhoneNumber(): void
+    {
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidPhoneNumber')
+            ->willReturn(false);
+
+        $this->userContactsValidator->expects($this->never())
+            ->method('isValidAddress');
+
+        $this->userService->expects($this->never())
+            ->method('getById');
+
+        $this->userContactsRepository->expects($this->never())
+            ->method('findByUserId');
+
+        $this->userContactsCreator->expects($this->never())
+            ->method('insertUserContacts');
+
+        $userContactsParam = ['id' => 5, 'address' => 'test', 'phoneNumber' => 8666];
+
+        $this->expectException(InvalidPhoneNumberException::class);
+
+        $this->userContactsService->createUserContacts($userContactsParam);
+
+    }
+
+    public function testCreateUserContactsExceptionOnEmptyAddress(): void
+    {
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidPhoneNumber')
+            ->willReturn(true);
+
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidAddress')
+            ->willReturn(false);
+
+        $this->userService->expects($this->never())
+            ->method('getById');
+
+        $this->userContactsRepository->expects($this->never())
+            ->method('findByUserId');
+
+        $this->userContactsCreator->expects($this->never())
+            ->method('insertUserContacts');
+
+        $userContactsParam = ['id' => 5, 'address' => 'test', 'phoneNumber' => 8666];
+
+        $this->expectException(EmptyAdressException::class);
 
         $this->userContactsService->createUserContacts($userContactsParam);
 

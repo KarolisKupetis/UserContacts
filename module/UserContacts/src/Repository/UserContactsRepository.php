@@ -20,7 +20,7 @@ class UserContactsRepository extends EntityRepository
             ->setParameter('id', $userId)
             ->getQuery()
             ->getOneOrNullResult();
-        
+
         return $userContacts;
     }
 }

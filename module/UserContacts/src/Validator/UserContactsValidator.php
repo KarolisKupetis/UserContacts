@@ -4,18 +4,20 @@ namespace UserContacts\Validator;
 
 class UserContactsValidator
 {
-    public function isValidPhoneNumber($phoneNumber):bool
+    public function isValidPhoneNumber(string $phoneNumber): bool
     {
-        preg_match('((^86[0-9]{8}$)|(^\+3706[0-9]*$))',$phoneNumber,$match);
+        preg_match('/^\+370[\d\s]*$/', $phoneNumber, $match);
 
-        if (!$match)
-        {
+        if (!$match) {
+
             return false;
         }
 
         return true;
     }
-}
 
-//(^86[0-9]{8}$) nacionaliniams mob.
-//
+    public function isValidAddress(string $address): bool
+    {
+        return $address !== '';
+    }
+}

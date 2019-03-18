@@ -1,22 +1,20 @@
 <?php
-
 return [
     \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class => [
-        \Users\Repository\UsersRepository::class,
-       \UserContacts\Repository\UserContactsRepository::class,
-
-        \UserContacts\Creator\UserContactsCreator::class=>[
-            \Doctrine\ORM\EntityManager::class,
+        \UserContacts\Validator\UserContactsValidator::class=>[],
+        0 => \Users\Repository\UsersRepository::class,
+        1 => \UserContacts\Repository\UserContactsRepository::class,
+        \UserContacts\Creator\UserContactsCreator::class => [
+            0 => \Doctrine\ORM\EntityManager::class,
         ],
-
-        \Users\Service\UserService::class=>[
-            \Users\Repository\UsersRepository::class,
+        \Users\Service\UserService::class => [
+            0 => \Users\Repository\UsersRepository::class,
         ],
-
-        \UserContacts\Service\UserContactsService::class=>[
-            \UserContacts\Repository\UserContactsRepository::class,
-            \UserContacts\Creator\UserContactsCreator::class,
-            \Users\Service\UserService::class,
+        \UserContacts\Service\UserContactsService::class => [
+            0 => \UserContacts\Repository\UserContactsRepository::class,
+            1 => \UserContacts\Creator\UserContactsCreator::class,
+            2 => \Users\Service\UserService::class,
+            \UserContacts\Validator\UserContactsValidator::class,
         ],
     ],
     'service_manager' => [
@@ -70,7 +68,7 @@ return [
     ],
     'zf-content-negotiation' => [
         'controllers' => [
-            'UserContactsAPI\\V1\\Rest\\Usercontacts\\Controller' => 'HalJson',
+            'UserContactsAPI\\V1\\Rest\\Usercontacts\\Controller' => 'Json',
         ],
         'accept_whitelist' => [
             'UserContactsAPI\\V1\\Rest\\Usercontacts\\Controller' => [
@@ -92,7 +90,7 @@ return [
                 'entity_identifier_name' => 'id',
                 'route_name' => 'user-contacts-api.rest.usercontacts',
                 'route_identifier_name' => 'usercontacts_id',
-                'hydrator' => \Zend\Hydrator\Reflection::class,
+                'hydrator' => \Zend\Hydrator\ArraySerializable::class,
             ],
             \UserContactsAPI\V1\Rest\Usercontacts\UsercontactsCollection::class => [
                 'entity_identifier_name' => 'id',
@@ -132,10 +130,10 @@ return [
                     ],
                 ],
                 'filters' => [],
-                'name' => 'adress',
-                'description' => 'Users adress',
+                'name' => 'address',
+                'description' => '',
                 'field_type' => 'string',
-                'error_message' => 'Invalid adress',
+                'error_message' => 'Invalid address',
             ],
         ],
     ],

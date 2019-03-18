@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace UserContacts\Repository;
 
@@ -13,7 +13,8 @@ class AbstractRepositoryFactory implements AbstractFactoryInterface
 {
     /**
      * @param ContainerInterface $container
-     * @param string $requestedName
+     * @param string             $requestedName
+     *
      * @return bool
      */
     public function canCreate(ContainerInterface $container, $requestedName): bool
@@ -40,8 +41,9 @@ class AbstractRepositoryFactory implements AbstractFactoryInterface
 
     /**
      * @param ContainerInterface $container
-     * @param string $requestedName
-     * @param array|null $options
+     * @param string             $requestedName
+     * @param array|null         $options
+     *
      * @return EntityRepository
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): EntityRepository
@@ -55,6 +57,7 @@ class AbstractRepositoryFactory implements AbstractFactoryInterface
 
     /**
      * @param string $requestedName
+     *
      * @return string
      */
     private function buildEntityClassName(string $requestedName): string

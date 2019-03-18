@@ -48,7 +48,8 @@ class UserContactsCreator
      *
      * @return UserContacts
      */
-    private function createUserContactsEntity(Users $user, array $contactParameters): UserContacts {
+    private function createUserContactsEntity(Users $user, array $contactParameters): UserContacts
+    {
 
         $userContacts = new UserContacts();
         $userContacts->setAddress($contactParameters['address']);
