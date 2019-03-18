@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Users\Service;
-
 
 use Users\Repository\UsersRepository;
 
@@ -31,10 +29,10 @@ class UserService
     /**
      * @param $userId
      *
-     * @return object|null
+     * @return mixed
      * @throws \Exception
      */
-    public function getById($userId)
+    public function getById(int $userId)
     {
        return $this->userRepository->getById($userId);
     }

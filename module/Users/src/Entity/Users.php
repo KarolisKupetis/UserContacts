@@ -8,13 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Users\Repository\UsersRepository")
  * @ORM\Table(name="users")
  */
-class User
+class Users
 {
     /**
      * @ORM\Id
      * @var int
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", name="id")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 

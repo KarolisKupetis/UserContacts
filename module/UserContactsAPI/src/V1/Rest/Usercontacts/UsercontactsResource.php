@@ -1,20 +1,37 @@
 <?php
+
 namespace UserContactsAPI\V1\Rest\Usercontacts;
 
-use Users\Entity\User;
+use UserContacts\Service\UserContactsService;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 
 class UsercontactsResource extends AbstractResourceListener
 {
     /**
-     * Create a resource
+     * @var UserContactsService
+     */
+    private $contactsService;
+
+    public function __construct(UserContactsService $contactsService)
+    {
+
+        $this->contactsService = $contactsService;
+    }
+
+    /**
+     * @param mixed $data
      *
-     * @param  mixed $data
-     * @return ApiProblem|mixed
+     * @return mixed|void|ApiProblem
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function create($data)
     {
-            return new ApiProblem(405, 'The POST method has  been defined');
+        $userContactParams['id'] = $this->getEvent()->getRouteMatch()->getParam('id');
+        $userContactParams['address'] = $data->adress;
+        $userContactParams['phoneNumber'] = $data->phone_number;
+        $this->contactsService->createUserContacts($userContactParams);
+
+        return null;
     }
 }

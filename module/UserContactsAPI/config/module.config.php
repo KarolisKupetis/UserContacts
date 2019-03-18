@@ -1,7 +1,32 @@
 <?php
+
 return [
+    \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class => [
+        \Users\Repository\UsersRepository::class,
+       \UserContacts\Repository\UserContactsRepository::class,
+
+        \UserContacts\Creator\UserContactsCreator::class=>[
+            \Doctrine\ORM\EntityManager::class,
+        ],
+
+        \Users\Service\UserService::class=>[
+            \Users\Repository\UsersRepository::class,
+        ],
+
+        \UserContacts\Service\UserContactsService::class=>[
+            \UserContacts\Repository\UserContactsRepository::class,
+            \UserContacts\Creator\UserContactsCreator::class,
+            \Users\Service\UserService::class,
+        ],
+    ],
     'service_manager' => [
+        'abstract_factories' => [
+            0 => \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class,
+            1 => \UserContacts\Repository\AbstractRepositoryFactory::class,
+        ],
         'factories' => [
+            \UserContacts\Repository\UserContactsRepository::class => \UserContacts\Repository\AbstractRepositoryFactory::class,
+            \Users\Repository\UsersRepository::class => \UserContacts\Repository\AbstractRepositoryFactory::class,
             \UserContactsAPI\V1\Rest\Usercontacts\UsercontactsResource::class => \UserContactsAPI\V1\Rest\Usercontacts\UsercontactsResourceFactory::class,
         ],
     ],
@@ -67,7 +92,7 @@ return [
                 'entity_identifier_name' => 'id',
                 'route_name' => 'user-contacts-api.rest.usercontacts',
                 'route_identifier_name' => 'usercontacts_id',
-                'hydrator' => \Zend\Hydrator\ArraySerializable::class,
+                'hydrator' => \Zend\Hydrator\Reflection::class,
             ],
             \UserContactsAPI\V1\Rest\Usercontacts\UsercontactsCollection::class => [
                 'entity_identifier_name' => 'id',

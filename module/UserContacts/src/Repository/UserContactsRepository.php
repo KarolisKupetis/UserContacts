@@ -4,7 +4,6 @@ namespace UserContacts\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-
 class UserContactsRepository extends EntityRepository
 {
     /**
@@ -13,11 +12,11 @@ class UserContactsRepository extends EntityRepository
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findByUserID($userId)
+    public function findByUserID(int $userId)
     {
-        $userContacts = $this->createQueryBuilder('uc')
+        $userContacts = $this->createQueryBuilder('a')
             ->select()
-            ->where('uc.user_id = :id')
+            ->where('a.user = :id')
             ->setParameter('id', $userId)
             ->getQuery()
             ->getOneOrNullResult();

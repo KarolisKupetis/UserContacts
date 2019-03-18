@@ -1,21 +1,13 @@
 <?php
 
-
 namespace UserContacts\Creator;
-
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use UserContacts\Entity\UserContacts;
-use UserContactsAPI\V1\Rest\Usercontacts\UsercontactsEntity;
-use Users\Entity\User;
+use Users\Entity\Users;
 
-/**
- * Class UserContactsCreator
- *
- * @package UserContacts\Creator
- */
 class UserContactsCreator
 {
     /**
@@ -24,7 +16,6 @@ class UserContactsCreator
     private $entityManager;
 
     /**
-     * UserContactsCreator constructor.
      *
      * @param EntityManager $entityManager
      */
@@ -34,43 +25,31 @@ class UserContactsCreator
     }
 
     /**
-     * @param User  $user
+     * @param Users $user
      * @param array $contactParameters
      *
-     * @return mixed
+     * @return int
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function insertUserContacts(User $user, array $contactParameters)
+    public function insertUserContacts(Users $user, array $contactParameters): int
     {
-      $newUserContacts = $this->createUserContactsEntity($user,$contactParameters);
+        $newUserContacts = $this->createUserContactsEntity($user, $contactParameters);
 
-        try {
-
-            $this->entityManager->persist($newUserContacts);
-
-        } catch (ORMException $e) {
-            throwException($e);
-        }
-
-        try {
-
-            $this->entityManager->flush();
-
-        } catch (OptimisticLockException $e) {
-        } catch (ORMException $e) {
-            throwException($e);
-        }
+        $this->entityManager->persist($newUserContacts);
+        $this->entityManager->flush();
 
         return $newUserContacts->getId();
     }
 
     /**
-     * @param User  $user
+     * @param Users $user
      * @param array $contactParameters
      *
      * @return UserContacts
      */
-    private function createUserContactsEntity(User $user,array $contactParameters):UserContacts
-    {
+    private function createUserContactsEntity(Users $user, array $contactParameters): UserContacts {
+
         $userContacts = new UserContacts();
         $userContacts->setAddress($contactParameters['address']);
         $userContacts->setPhoneNumber($contactParameters['phoneNumber']);

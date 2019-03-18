@@ -3,7 +3,7 @@
 namespace UserContacts\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Users\Entity\User;
+use Users\Entity\Users;
 
 /**
  * @ORM\Entity(repositoryClass="UserContacts\Repository\UserContactsRepository")
@@ -32,8 +32,8 @@ class UserContacts
     private $phoneNumber;
 
     /**
-     * @var User
-     * @ORM\OneToOne(targetEntity="Users\Entity\User")
+     * @var Users
+     * @ORM\OneToOne(targetEntity="Users\Entity\Users")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
@@ -55,9 +55,9 @@ class UserContacts
     }
 
     /**
-     * @return User
+     * @return Users
      */
-    public function getUser(): User
+    public function getUser(): Users
     {
         return $this->user;
     }

@@ -1,10 +1,9 @@
 <?php
 
-
 namespace UserContacts\Service;
 
-use http\Client\Curl\User;
 use UserContacts\Creator\UserContactsCreator;
+use UserContacts\Exceptions\ExistingUserContactsException;
 use UserContacts\Repository\UserContactsRepository;
 use Users\Service\UserService;
 
@@ -29,12 +28,6 @@ class UserContactsService
      */
     private $userService;
 
-    /**
-     * UserContactsService constructor.
-     *
-     * @param UserContactsRepository $repository
-     * @param UserContactsCreator    $creator
-     */
     public function __construct(
         UserContactsRepository $repository,
         UserContactsCreator $creator,
@@ -47,22 +40,23 @@ class UserContactsService
 
     /**
      * @param array $contactParameters
-     *
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Exception
      */
-    public function insertUserContacts(array $contactParameters)
+    public function createUserContacts(array $contactParameters)
     {
        $user = $this->userService->getById($contactParameters['id']);
 
-       $userContacts = $this->repository->findByUserID('id');
+       $userContacts = $this->repository->findByUserID($contactParameters['id']);
 
        if ($userContacts)
        {
-           throw new \Exception('User contacts already exists');
+           throw new ExistingUserContactsException('User contacts already exist');
+       }
+       else{
+           return $this->creator->insertUserContacts($user,$contactParameters);
        }
 
-       return $this->creator->insertUserContacts($user,$contactParameters);
     }
 }
