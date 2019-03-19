@@ -1,6 +1,0 @@
-actor: ApiTester
-modules:
-    enabled:
-        - REST:
-              - url: http://0.0.0.0:8080/company/users/
-              - depends: UserContactsAPI

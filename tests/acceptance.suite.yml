@@ -8,5 +8,16 @@ actor: AcceptanceTester
 modules:
     enabled:
         - PhpBrowser:
-            url: http://localhost/myapp
+            url: http://0.0.0.0:8080
         - \Helper\Acceptance
+        - REST:
+              depends: PhpBrowser
+              url: http://0.0.0.0:8080
+        - Db:
+            dsn: 'mysql:host=localhost;port=80;dbname=usercontacts'
+            user: 'root'
+            password: 'qwer'
+            dump: 'tests/_data/db.dump.sql'
+            populate: true
+            cleanup: true
+            populator: 'mysql -h $host -u $user --password=qwer $dbname < $dump'
