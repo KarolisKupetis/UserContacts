@@ -3,6 +3,8 @@
 namespace UserContacts\Service;
 
 use UserContacts\Creator\UserContactsCreator;
+use UserContacts\Editor\UserContactsEditor;
+use UserContacts\Entity\UserContacts;
 use UserContacts\Exceptions\EmptyAddressException;
 use UserContacts\Exceptions\ExistingUserContactsException;
 use UserContacts\Exceptions\InvalidPhoneNumberException;
@@ -36,17 +38,23 @@ class UserContactsService
      * @var UserContactsValidator
      */
     private $validator;
+    /**
+     * @var UserContactsEditor
+     */
+    private $editor;
 
     public function __construct(
         UserContactsRepository $repository,
         UserContactsCreator $creator,
         UserService $userService,
-        UserContactsValidator $validator
+        UserContactsValidator $validator,
+        UserContactsEditor $editor
     ) {
         $this->repository = $repository;
         $this->creator = $creator;
         $this->userService = $userService;
         $this->validator = $validator;
+        $this->editor = $editor;
     }
 
     /**
@@ -56,8 +64,10 @@ class UserContactsService
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Exception
      */
-    public function createUserContacts(array $contactParameters)
-    {
+    public
+    function createUserContacts(
+        array $contactParameters
+    ) {
         if (!$this->validator->isValidPhoneNumber($contactParameters['phoneNumber'])) {
             throw new InvalidPhoneNumberException('Invalid phone number');
         }
@@ -76,6 +86,36 @@ class UserContactsService
 
             return $this->creator->insertUserContacts($user, $contactParameters);
         }
+    }
 
+    /**
+     * @param int   $id
+     * @param array $editedParams
+     *
+     * @return UserContacts
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \UserContacts\Exceptions\NotExistingUserContacts
+     */
+    public function editUserContacts(int $id, array $editedParams): UserContacts
+    {
+        $userContacts = $this->repository->getById($id);
+
+        if($editedParams['phoneNumber']==='') {
+            $editedParams['phoneNumber'] = $userContacts->getPhoneNumber();
+        }
+
+        if ($editedParams['address']==='') {
+            $editedParams['address']=$userContacts->getAddress();
+        }
+
+        $isAddressValid = $this->validator->isValidAddress($editedParams['address']);
+        $isPhoneNumberValid = $this->validator->isValidPhoneNumber($editedParams['phoneNumber']);
+
+        if ($isAddressValid && $isPhoneNumberValid) {
+            return $this->editor->editUserContacts($userContacts, $editedParams);
+        }
+
+        return null;
     }
 }

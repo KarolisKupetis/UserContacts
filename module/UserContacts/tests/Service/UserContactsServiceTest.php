@@ -4,7 +4,8 @@ namespace UserContactsServiceTest\Service;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use UserContacts\Exceptions\EmptyAdressException;
+use UserContacts\Editor\UserContactsEditor;
+use UserContacts\Exceptions\EmptyAddressException;
 use UserContacts\Exceptions\ExistingUserContactsException;
 use UserContacts\Exceptions\InvalidPhoneNumberException;
 use UserContacts\Repository\UserContactsRepository;
@@ -31,6 +32,9 @@ class UserContactsServiceTest extends TestCase
     /** @var UserContactsValidator */
     private $userContactsValidator;
 
+    /** @var UserContactsEditor */
+    private $userContactsEditor;
+
     protected function setUp()
     {
         $this->userContactsRepository = $this->getMockBuilder(UserContactsRepository::class)
@@ -49,8 +53,12 @@ class UserContactsServiceTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->userContactsEditor = $this->getMockBuilder(UserContactsEditor::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->userContactsService = new UserContactsService($this->userContactsRepository, $this->userContactsCreator,
-            $this->userService, $this->userContactsValidator);
+            $this->userService, $this->userContactsValidator,$this->userContactsEditor);
     }
 
     /**
@@ -116,6 +124,9 @@ class UserContactsServiceTest extends TestCase
 
     }
 
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function testCreateUserContactsExceptionOnWrongPhoneNumber(): void
     {
         $this->userContactsValidator->expects($this->once())
@@ -142,6 +153,9 @@ class UserContactsServiceTest extends TestCase
 
     }
 
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function testCreateUserContactsExceptionOnEmptyAddress(): void
     {
         $this->userContactsValidator->expects($this->once())
@@ -163,7 +177,7 @@ class UserContactsServiceTest extends TestCase
 
         $userContactsParam = ['id' => 5, 'address' => 'test', 'phoneNumber' => 8666];
 
-        $this->expectException(EmptyAdressException::class);
+        $this->expectException(EmptyAddressException::class);
 
         $this->userContactsService->createUserContacts($userContactsParam);
 

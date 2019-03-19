@@ -1,13 +1,13 @@
 <?php
 
-class FirstCest
+class UserContactsCest
 {
     public function _before(AcceptanceTester $I)
     {
 
     }
 
-    public function tryToTest(AcceptanceTester $I)
+    public function testUserContactsPOST(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Content-type', 'application/problem+json');
         $I->haveHttpHeader('Accept', '*/*');

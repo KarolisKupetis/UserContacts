@@ -1,16 +1,17 @@
 <?php
-namespace UserContactsAPI\V1\Rest\Usercontacts;
+
+namespace UserContactsAPI\V1\Rest\UserContacts;
 
 use Psr\Container\ContainerInterface;
 use UserContacts\Service\UserContactsService;
 
-class UsercontactsResourceFactory
+class UserContactsResourceFactory
 {
     public function __invoke(ContainerInterface $services)
     {
         /** @var  $UserContactsService */
         $UserContactsService = $services->get(UserContactsService::class);
 
-        return new UsercontactsResource($UserContactsService);
+        return new UserContactsResource($UserContactsService);
     }
 }
