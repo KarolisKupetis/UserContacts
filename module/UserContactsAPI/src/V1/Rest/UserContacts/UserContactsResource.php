@@ -29,10 +29,10 @@ class UserContactsResource extends AbstractResourceListener
     {
         $userContactParams['id'] = $this->getEvent()->getRouteMatch()->getParam('userid');
         $userContactParams['address'] = $data->address;
-        $userContactParams['phoneNumber'] = $data->phone_number;
-        $userContactsId = $this->contactsService->createUserContacts($userContactParams);
+        $userContactParams['phoneNumber'] = $data->phoneNumber;
+        $newUserContacts = $this->contactsService->createUserContacts($userContactParams);
 
-        return ['id' => $userContactsId];
+        return UserContactsEntity::fromUserContactsEntity($newUserContacts);
     }
 
     /**
@@ -49,7 +49,7 @@ class UserContactsResource extends AbstractResourceListener
     public function update($id, $data)
     {
         $editedParams['address'] = $data->address;
-        $editedParams['phoneNumber'] = $data->phone_number;
+        $editedParams['phoneNumber'] = $data->phoneNumber;
 
         $editedUserContacts = $this->contactsService->editUserContacts($id, $editedParams);
 
@@ -74,14 +74,14 @@ class UserContactsResource extends AbstractResourceListener
         ];
 
         if (property_exists($data, 'address')) {
-            $editedParams['address'] = 'yeeaaaa';
+            $editedParams['address'] = $data->address;
         }
 
-        if (property_exists($data, 'phone_number')) {
-            $editedParams['phoneNumber'] = '+3709999';
+        if (property_exists($data, 'phoneNumber')) {
+            $editedParams['phoneNumber'] = $data->phoneNumber;
         }
 
-        $patchedUserContacts = $this->contactsService->patchUserContacts($id, $editedParams);
+        $patchedUserContacts = $this->contactsService->updateSeparateUserContactsParams($id, $editedParams);
 
         return UserContactsEntity::fromUserContactsEntity($patchedUserContacts);
 

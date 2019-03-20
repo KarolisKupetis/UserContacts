@@ -32,14 +32,14 @@ class UserContactsCreator
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function insertUserContacts(User $user, array $contactParameters): int
+    public function insertUserContacts(User $user, array $contactParameters): UserContacts
     {
         $newUserContacts = $this->createUserContactsEntity($user, $contactParameters);
 
         $this->entityManager->persist($newUserContacts);
         $this->entityManager->flush();
 
-        return $newUserContacts->getId();
+        return $newUserContacts;
     }
 
     /**

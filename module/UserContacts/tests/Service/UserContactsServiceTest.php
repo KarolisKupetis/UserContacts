@@ -67,7 +67,8 @@ class UserContactsServiceTest extends TestCase
     public function testCreateUserContacts(): void
     {
         $userId = 1;
-        $userContactsId = 5;
+        $userContacts =new UserContacts();
+        $userContacts->setId(5);
 
         $this->userContactsValidator->expects($this->once())
             ->method('isValidPhoneNumber')
@@ -79,18 +80,18 @@ class UserContactsServiceTest extends TestCase
 
         $this->userService->expects($this->once())
             ->method('getById')
-            ->willReturn(new \User\Entity\Users());
+            ->willReturn(new \User\Entity\User());
 
         $this->userContactsRepository->expects($this->once())
             ->method('findByUserId');
 
         $this->userContactsCreator->expects($this->once())
             ->method('insertUserContacts')
-            ->willReturn($userContactsId);
+            ->willReturn($userContacts);
 
         $userContactsParam = ['id' => 5, 'address' => 'test', 'phoneNumber' => 8666];
-
-        $this->assertEquals(5, $this->userContactsService->createUserContacts($userContactsParam));
+        $newUserContact = $this->userContactsService->createUserContacts($userContactsParam);
+        $this->assertEquals(5, $newUserContact->getId());
     }
 
     /**

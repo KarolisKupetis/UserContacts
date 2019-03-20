@@ -84,6 +84,7 @@ class UserContactsService
 
         if ($userContacts) {
             throw new ExistingUserContactsException('User contacts already exist');
+
         } else {
 
             $user = $this->userService->getById($contactParameters['id']);
@@ -137,20 +138,19 @@ class UserContactsService
      * @throws NotExistingUserContactsException
      * @throws \Doctrine\ORM\ORMException
      */
-    public function patchUserContacts(int $id, array $editedParams): UserContacts
+    public function updateSeparateUserContactsParams(int $id, array $editedParams): UserContacts
     {
         try {
-
             $userContacts = $this->repository->getById($id);
         } catch (NoResultException $e) {
             throw new NotExistingUserContactsException('User contacts by that id does not exist');
         }
 
-        if ($editedParams['phoneNumber']==='') {
+        if ($editedParams['phoneNumber'] === '') {
             $editedParams['phoneNumber'] = $userContacts->getPhoneNumber();
         }
 
-        if ($editedParams['address']==='') {
+        if ($editedParams['address'] === '') {
             $editedParams['address'] = $userContacts->getAddress();
         }
 

@@ -7,7 +7,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use UserContacts\Creator\UserContactsCreator;
 use UserContacts\Entity\UserContacts;
-use User\Entity\Users;
+use User\Entity\User;
 
 class UserContactsCreatorTest extends TestCase
 {
@@ -32,7 +32,7 @@ class UserContactsCreatorTest extends TestCase
      */
     public function testInsertUserContacts(): void
     {
-        $user = new Users();
+        $user = new User();
         $params = ['phoneNumber' => '8666', 'address' => 'Test av. 1'];
         $user->setId(1);
 
@@ -44,7 +44,7 @@ class UserContactsCreatorTest extends TestCase
                 $contacts->setId(5);
                 return true;
             }));
-
-        $this->assertEquals(5, $this->userContactsCreator->insertUserContacts($user, $params));
+        $newUserContact = $this->userContactsCreator->insertUserContacts($user, $params);
+        $this->assertEquals(5, $newUserContact->getId());
     }
 }

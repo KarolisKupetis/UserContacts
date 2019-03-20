@@ -6,12 +6,12 @@ use UserContacts\Entity\UserContacts;
 
 class UserContactsEntity
 {
-    private $id;
-    private $address;
-    private $phoneNumber;
-    private $userId;
+    public $id;
+    public $address;
+    public $phoneNumber;
+    public $userId;
 
-    public static function fromUserContactsEntity(UserContacts $userContacts):array
+    public static function fromUserContactsEntity(UserContacts $userContacts):UserContactsEntity
     {
         $apiEntity = new self();
         $apiEntity->userId = $userContacts->getUser()->getId();
@@ -19,20 +19,7 @@ class UserContactsEntity
         $apiEntity->id = $userContacts->getId();
         $apiEntity->address = $userContacts->getAddress();
 
-        return $apiEntity->getArrayCopy();
-    }
-
-    public function getArrayCopy():array
-    {
-        $array = [
-            'id' => $this->id,
-            'address' => $this->address,
-            'phoneNumber' => $this->phoneNumber,
-            'userId' => $this->userId,
-        ];
-
-        return $array;
-
+        return $apiEntity;
     }
 
 
