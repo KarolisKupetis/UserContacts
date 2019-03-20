@@ -5,9 +5,7 @@ namespace UserContactsAPI\Resource;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use UserContacts\Service\UserContactsService;
-use UserContactsAPI\V1\Rest\Usercontacts\UsercontactsResource;
-use Zend\InputFilter\Input;
-use Zend\InputFilter\InputFilter;
+use UserContactsAPI\V1\Rest\UserContacts\UserContactsResource;
 use Zend\Router\RouteMatch;
 use ZF\Rest\ResourceEvent;
 
@@ -16,7 +14,7 @@ class UserContactsResourceTest extends TestCase
     /** @var UserContactsService|MockObject */
     private $userContactsService;
 
-    /** @var UsercontactsResource */
+    /** @var UserContactsResource */
     private $userContactsResource;
 
     protected function setUp()
@@ -25,7 +23,7 @@ class UserContactsResourceTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->userContactsResource = new UsercontactsResource($this->userContactsService);
+        $this->userContactsResource = new UserContactsResource($this->userContactsService);
     }
 
     public function testUserContactsResource(): void

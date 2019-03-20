@@ -5,7 +5,7 @@ namespace UserContacts\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use UserContacts\Exceptions\NotExistingUserContacts;
+use UserContacts\Exceptions\NotExistingUserContactsException;
 
 class UserContactsRepository extends EntityRepository
 {
@@ -32,7 +32,7 @@ class UserContactsRepository extends EntityRepository
      *
      * @return mixed
      * @throws NonUniqueResultException
-     * @throws NotExistingUserContacts
+     * @throws NotExistingUserContactsException
      */
     public function getById(int $id)
     {
@@ -45,7 +45,7 @@ class UserContactsRepository extends EntityRepository
                 ->getSingleResult();
         } catch (NoResultException $e) {
 
-            throw new NotExistingUserContacts('UserContacts by that Id does not exist');
+            throw new NotExistingUserContactsException('UserContacts by that Id does not exist');
         }
     }
 }

@@ -39,9 +39,11 @@ class UserContactsResource extends AbstractResourceListener
      * @param mixed $id
      * @param mixed $data
      *
-     * @return mixed|\UserContacts\Entity\UserContacts|ApiProblem
+     * @return mixed|UserContactsEntity|ApiProblem
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
+     * @throws \UserContacts\Exceptions\EmptyAddressException
+     * @throws \UserContacts\Exceptions\InvalidPhoneNumberException
      * @throws \UserContacts\Exceptions\NotExistingUserContacts
      */
     public function update($id, $data)
@@ -49,7 +51,8 @@ class UserContactsResource extends AbstractResourceListener
         $editedParams['address'] = $data->address;
         $editedParams['phoneNumber'] = $data->phone_number;
 
-        return $this->contactsService->editUserContacts($id,$editedParams);
+        $editedUserContacts = $this->contactsService->editUserContacts($id,$editedParams);
 
+        UserContactsEntity::fromUserContactsEntity($editedUserContacts);
     }
 }

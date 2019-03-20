@@ -58,7 +58,7 @@ class UserContactsServiceTest extends TestCase
             ->getMock();
 
         $this->userContactsService = new UserContactsService($this->userContactsRepository, $this->userContactsCreator,
-            $this->userService, $this->userContactsValidator,$this->userContactsEditor);
+            $this->userService, $this->userContactsValidator, $this->userContactsEditor);
     }
 
     /**
@@ -180,6 +180,76 @@ class UserContactsServiceTest extends TestCase
         $this->expectException(EmptyAddressException::class);
 
         $this->userContactsService->createUserContacts($userContactsParam);
+    }
 
+    /**
+     * @throws EmptyAddressException
+     * @throws InvalidPhoneNumberException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \UserContacts\Exceptions\NotExistingUserContacts
+     */
+    public function testEditUserContacts(): void
+    {
+        $editedParams = ['address' => 'avenue 1', 'phoneNumber' => '+3777'];
+
+        $editedUserContacts = new UserContacts();
+        $editedUserContacts->setAddress($editedParams['address']);
+        $editedUserContacts->setPhoneNumber($editedParams['phoneNumber']);
+
+        $this->userContactsRepository->expects($this->once())
+            ->method('getById')
+            ->willReturn(new UserContacts());
+
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidPhoneNumber')
+            ->willReturn(true);
+
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidAddress')
+            ->willReturn(true);
+
+        $this->userContactsEditor->expects($this->once())
+            ->method('editUserContacts')
+            ->willReturn($editedUserContacts);
+
+        $returnedUserContacts = $this->userContactsService->editUserContacts(5, $editedParams);
+
+        $this->assertEquals($returnedUserContacts->getPhoneNumber(), $editedParams['phoneNumber']);
+
+        $this->assertEquals($returnedUserContacts->getAddress(), $editedParams['address']);
+    }
+
+    /**
+     * @throws EmptyAddressException
+     * @throws InvalidPhoneNumberException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \UserContacts\Exceptions\NotExistingUserContacts
+     */
+    public function testEditUserContactsExceptionOnInvalidNPhoneNumber(): void
+    {
+        $editedParams = ['address' => '', 'phoneNumber' => '+37000'];
+
+        $preEditedUserContacts = new UserContacts();
+
+        $this->userContactsRepository->expects($this->once())
+            ->method('getById')
+            ->willReturn($preEditedUserContacts);
+
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidPhoneNumber')
+            ->willReturn(true);
+
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidAddress')
+            ->willReturn(false);
+
+        $this->userContactsEditor->expects($this->never())
+            ->method('editUserContacts');
+
+        $this->expectException(EmptyAddressException::class);
+
+        $this->userContactsService->editUserContacts(5, $editedParams);
     }
 }
