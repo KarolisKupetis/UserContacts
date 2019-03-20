@@ -66,7 +66,6 @@ class UserContactsServiceTest extends TestCase
      */
     public function testCreateUserContacts(): void
     {
-        $userId = 1;
         $userContacts =new UserContacts();
         $userContacts->setId(5);
 
@@ -188,7 +187,7 @@ class UserContactsServiceTest extends TestCase
      * @throws InvalidPhoneNumberException
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \UserContacts\Exceptions\NotExistingUserContacts
+     * @throws \UserContacts\Exceptions\NotExistingUserContactsException
      */
     public function testEditUserContacts(): void
     {
@@ -226,7 +225,7 @@ class UserContactsServiceTest extends TestCase
      * @throws InvalidPhoneNumberException
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \UserContacts\Exceptions\NotExistingUserContacts
+     * @throws \UserContacts\Exceptions\NotExistingUserContactsException
      */
     public function testEditUserContactsExceptionOnInvalidNPhoneNumber(): void
     {
@@ -252,5 +251,43 @@ class UserContactsServiceTest extends TestCase
         $this->expectException(EmptyAddressException::class);
 
         $this->userContactsService->editUserContacts(5, $editedParams);
+    }
+
+    /**
+     * @throws EmptyAddressException
+     * @throws InvalidPhoneNumberException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \UserContacts\Exceptions\NotExistingUserContactsException
+     */
+    public function testUpdateSeparateUserContactsParams():void
+    {
+        $editedParams = ['phoneNumber' => '+37011', 'address'=>''];
+
+        $preEditedUserContacts = new UserContacts();
+        $preEditedUserContacts->setPhoneNumber('+37000');
+        $preEditedUserContacts->setAddress('best street ever');
+
+        $editedUserContacts = new UserContacts();
+        $editedUserContacts->setPhoneNumber('+37011');
+        $editedUserContacts->setAddress('best street ever');
+
+        $this->userContactsRepository->expects($this->once())
+            ->method('getById')
+            ->willReturn($preEditedUserContacts);
+
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidPhoneNumber')
+            ->willReturn(true);
+
+        $this->userContactsEditor->expects($this->once())
+            ->method('editUserContacts')
+            ->willReturn($editedUserContacts);
+
+        $returnedUserContacts = $this->userContactsService->updateSeparateUserContactsParams(5, $editedParams);
+
+        $this->assertEquals($returnedUserContacts->getPhoneNumber(), $editedParams['phoneNumber']);
+
+        $this->assertEquals($returnedUserContacts->getAddress(), $preEditedUserContacts->getAddress());
     }
 }

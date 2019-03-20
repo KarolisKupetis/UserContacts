@@ -67,11 +67,8 @@ class UserContactsService
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Exception
      */
-    public
-    function createUserContacts(
-        array $contactParameters
-    ) {
-
+    public function createUserContacts(array $contactParameters) :UserContacts
+    {
         if (!$this->validator->isValidPhoneNumber($contactParameters['phoneNumber'])) {
             throw new InvalidPhoneNumberException('Invalid phone number');
         }
