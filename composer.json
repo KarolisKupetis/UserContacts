@@ -62,7 +62,7 @@
         "psr-4": {
             "ApplicationTest\\": "module/Application/test/",
             "UserContacts\\": "module/UserContacts/src/",
-            "Users\\": "module/Users/src/"
+            "User\\": "module/User/src/"
         },
         "files": [
             "src/Apigility/constants.php"

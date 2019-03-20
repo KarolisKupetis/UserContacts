@@ -16,8 +16,8 @@ class UserContactsValidator
         return true;
     }
 
-    public function isValidAddress(string $address): bool
+    public function isValidAddress($address): bool
     {
-        return $address !== '';
+        return !($address === ''||$address===null);
     }
 }

@@ -2,23 +2,23 @@
 return [
     \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class => [
         \UserContacts\Validator\UserContactsValidator::class => [],
-        0 => \Users\Repository\UsersRepository::class,
+        0 => \User\Repository\UserRepository::class,
         1 => \UserContacts\Repository\UserContactsRepository::class,
         \UserContacts\Creator\UserContactsCreator::class => [
             0 => \Doctrine\ORM\EntityManager::class,
         ],
-        \UserContacts\Editor\UserContactsEditor::class=>[
-            \Doctrine\ORM\EntityManager::class,
+        \UserContacts\Editor\UserContactsEditor::class => [
+            0 => \Doctrine\ORM\EntityManager::class,
         ],
-        \Users\Service\UserService::class => [
-            0 => \Users\Repository\UsersRepository::class,
+        \User\Service\UserService::class => [
+            0 => \User\Repository\UserRepository::class,
         ],
         \UserContacts\Service\UserContactsService::class => [
             0 => \UserContacts\Repository\UserContactsRepository::class,
             1 => \UserContacts\Creator\UserContactsCreator::class,
-            2 => \Users\Service\UserService::class,
+            2 => \User\Service\UserService::class,
             3 => \UserContacts\Validator\UserContactsValidator::class,
-            \UserContacts\Editor\UserContactsEditor::class,
+            4 => \UserContacts\Editor\UserContactsEditor::class,
         ],
     ],
     'service_manager' => [
@@ -28,7 +28,7 @@ return [
         ],
         'factories' => [
             \UserContacts\Repository\UserContactsRepository::class => \UserContacts\Repository\AbstractRepositoryFactory::class,
-            \Users\Repository\UsersRepository::class => \UserContacts\Repository\AbstractRepositoryFactory::class,
+            \User\Repository\UserRepository::class => \UserContacts\Repository\AbstractRepositoryFactory::class,
             \UserContactsAPI\V1\Rest\UserContacts\UserContactsResource::class => \UserContactsAPI\V1\Rest\UserContacts\UserContactsResourceFactory::class,
         ],
     ],
@@ -60,11 +60,13 @@ return [
                 0 => 'POST',
                 1 => 'PUT',
                 2 => 'GET',
+                3 => 'PATCH',
             ],
             'collection_http_methods' => [
                 0 => 'POST',
                 1 => 'PUT',
                 2 => 'GET',
+                3 => 'PATCH',
             ],
             'collection_query_whitelist' => [],
             'page_size' => 25,

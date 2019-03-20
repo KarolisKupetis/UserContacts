@@ -1,8 +1,9 @@
 <?php
 
-namespace Users\Service;
+namespace User\Service;
 
-use Users\Repository\UsersRepository;
+use User\Entity\User;
+use User\Repository\UserRepository;
 
 /**
  * Class UserService
@@ -12,16 +13,16 @@ use Users\Repository\UsersRepository;
 class UserService
 {
     /**
-     * @var UsersRepository
+     * @var UserRepository
      */
     private $userRepository;
 
     /**
      * UserService constructor.
      *
-     * @param UsersRepository $userRepository
+     * @param UserRepository $userRepository
      */
-    public function __construct(UsersRepository $userRepository)
+    public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
@@ -32,7 +33,7 @@ class UserService
      * @return mixed
      * @throws \Exception
      */
-    public function getById(int $userId)
+    public function getById(int $userId): User
     {
         return $this->userRepository->getById($userId);
     }

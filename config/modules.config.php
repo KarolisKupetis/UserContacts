@@ -27,9 +27,9 @@ return [
     'ZF\\Rpc',
     'ZF\\Versioning',
     'UserContacts',
-    'Users',
     'DoctrineModule',
     'DoctrineORMModule',
     'Application',
     'UserContactsAPI',
+    'User',
 ];

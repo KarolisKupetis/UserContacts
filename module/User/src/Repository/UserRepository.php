@@ -1,10 +1,11 @@
 <?php
 
-namespace Users\Repository;
+namespace User\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use User\Entity\User;
 
-class UsersRepository extends EntityRepository
+class UserRepository extends EntityRepository
 {
     /**
      * @param $userId
@@ -12,11 +13,11 @@ class UsersRepository extends EntityRepository
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getById($userId)
+    public function getById(int $userId) :User
     {
-        return $this->createQueryBuilder('a')
+        return $this->createQueryBuilder('u')
             ->select()
-            ->where('a.id = :name')
+            ->where('u.id = :name')
             ->setParameter('name', $userId)
             ->getQuery()
             ->getOneOrNullResult();

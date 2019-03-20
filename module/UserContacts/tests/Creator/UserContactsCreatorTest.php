@@ -7,7 +7,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use UserContacts\Creator\UserContactsCreator;
 use UserContacts\Entity\UserContacts;
-use Users\Entity\Users;
+use User\Entity\Users;
 
 class UserContactsCreatorTest extends TestCase
 {

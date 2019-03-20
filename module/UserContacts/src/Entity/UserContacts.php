@@ -3,7 +3,7 @@
 namespace UserContacts\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Users\Entity\Users;
+use User\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass="UserContacts\Repository\UserContactsRepository")
@@ -32,8 +32,8 @@ class UserContacts
     private $phoneNumber;
 
     /**
-     * @var Users
-     * @ORM\OneToOne(targetEntity="Users\Entity\Users")
+     * @var User
+     * @ORM\OneToOne(targetEntity="User\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
@@ -49,15 +49,15 @@ class UserContacts
     /**
      * @param $id
      */
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
     /**
-     * @return Users
+     * @return User
      */
-    public function getUser(): Users
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -65,7 +65,7 @@ class UserContacts
     /**
      * @param $user
      */
-    public function setUser($user): void
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }
@@ -81,7 +81,7 @@ class UserContacts
     /**
      * @param $address
      */
-    public function setAddress($address): void
+    public function setAddress(string $address): void
     {
         $this->address = $address;
     }
@@ -97,7 +97,7 @@ class UserContacts
     /**
      * @param $phoneNumber
      */
-    public function setPhoneNumber($phoneNumber): void
+    public function setPhoneNumber(string $phoneNumber):void
     {
         $this->phoneNumber = $phoneNumber;
     }

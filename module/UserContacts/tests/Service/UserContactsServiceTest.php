@@ -11,7 +11,7 @@ use UserContacts\Exceptions\InvalidPhoneNumberException;
 use UserContacts\Repository\UserContactsRepository;
 use UserContacts\Creator\UserContactsCreator;
 use UserContacts\Validator\UserContactsValidator;
-use Users\Service\UserService;
+use User\Service\UserService;
 use UserContacts\Service\UserContactsService;
 use UserContacts\Entity\UserContacts;
 
@@ -79,7 +79,7 @@ class UserContactsServiceTest extends TestCase
 
         $this->userService->expects($this->once())
             ->method('getById')
-            ->willReturn(new \Users\Entity\Users());
+            ->willReturn(new \User\Entity\Users());
 
         $this->userContactsRepository->expects($this->once())
             ->method('findByUserId');

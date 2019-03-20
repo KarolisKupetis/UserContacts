@@ -5,6 +5,7 @@ namespace UserContacts\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use UserContacts\Entity\UserContacts;
 use UserContacts\Exceptions\NotExistingUserContactsException;
 
 class UserContactsRepository extends EntityRepository
@@ -15,11 +16,11 @@ class UserContactsRepository extends EntityRepository
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findByUserID(int $userId)
+    public function findByUserID(int $userId): ?UserContacts
     {
-        $userContacts = $this->createQueryBuilder('a')
+        $userContacts = $this->createQueryBuilder('u')
             ->select()
-            ->where('a.user = :id')
+            ->where('u.user = :id')
             ->setParameter('id', $userId)
             ->getQuery()
             ->getOneOrNullResult();
@@ -30,22 +31,17 @@ class UserContactsRepository extends EntityRepository
     /**
      * @param int $id
      *
-     * @return mixed
+     * @return UserContacts
+     * @throws NoResultException
      * @throws NonUniqueResultException
-     * @throws NotExistingUserContactsException
      */
-    public function getById(int $id)
+    public function getById(int $id): UserContacts
     {
-        try {
-            return $this->createQueryBuilder('a')
-                ->select()
-                ->where('a.id = :id')
-                ->setParameter('id', $id)
-                ->getQuery()
-                ->getSingleResult();
-        } catch (NoResultException $e) {
-
-            throw new NotExistingUserContactsException('UserContacts by that Id does not exist');
-        }
+        return $this->createQueryBuilder('u')
+            ->select()
+            ->where('u.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleResult();
     }
 }

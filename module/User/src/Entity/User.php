@@ -1,14 +1,14 @@
 <?php
 
-namespace Users\Entity;
+namespace User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Users\Repository\UsersRepository")
+ * @ORM\Entity(repositoryClass="User\Repository\UserRepository")
  * @ORM\Table(name="users")
  */
-class Users
+class User
 {
     /**
      * @ORM\Id
@@ -42,7 +42,7 @@ class Users
     /**
      * @param $id
      */
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -58,7 +58,7 @@ class Users
     /**
      * @param $name
      */
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -74,7 +74,7 @@ class Users
     /**
      * @param $email
      */
-    public function setEmail($email): void
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }

@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use UserContacts\Entity\UserContacts;
-use Users\Entity\Users;
+use User\Entity\User;
 
 class UserContactsCreator
 {
@@ -25,14 +25,14 @@ class UserContactsCreator
     }
 
     /**
-     * @param Users $user
+     * @param User  $user
      * @param array $contactParameters
      *
      * @return int
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function insertUserContacts(Users $user, array $contactParameters): int
+    public function insertUserContacts(User $user, array $contactParameters): int
     {
         $newUserContacts = $this->createUserContactsEntity($user, $contactParameters);
 
@@ -43,12 +43,12 @@ class UserContactsCreator
     }
 
     /**
-     * @param Users $user
+     * @param User  $user
      * @param array $contactParameters
      *
      * @return UserContacts
      */
-    private function createUserContactsEntity(Users $user, array $contactParameters): UserContacts
+    private function createUserContactsEntity(User $user, array $contactParameters): UserContacts
     {
 
         $userContacts = new UserContacts();
