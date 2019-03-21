@@ -289,4 +289,16 @@ class UserContactsServiceTest extends TestCase
 
         $this->assertEquals($returnedUserContacts->getAddress(), $preEditedUserContacts->getAddress());
     }
+
+    public function testGetUserContactsByUserId():void
+    {
+        $userContacts = new UserContacts();
+        $userContacts->setId(1);
+
+        $this->userContactsRepository->expects($this->once())
+            ->method('findByUserID')
+            ->willReturn($userContacts);
+
+       $this->assertEquals(1, $this->userContactsService->getUserContactsByUserId(1)->getId());
+    }
 }

@@ -4,7 +4,6 @@ namespace UserContacts\Service;
 
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use phpDocumentor\Reflection\Types\This;
 use UserContacts\Creator\UserContactsCreator;
 use UserContacts\Editor\UserContactsEditor;
 use UserContacts\Entity\UserContacts;
