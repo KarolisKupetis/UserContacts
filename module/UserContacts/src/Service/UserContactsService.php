@@ -4,6 +4,7 @@ namespace UserContacts\Service;
 
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use phpDocumentor\Reflection\Types\This;
 use UserContacts\Creator\UserContactsCreator;
 use UserContacts\Editor\UserContactsEditor;
 use UserContacts\Entity\UserContacts;
@@ -67,7 +68,7 @@ class UserContactsService
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Exception
      */
-    public function createUserContacts(array $contactParameters) :UserContacts
+    public function createUserContacts(array $contactParameters): UserContacts
     {
         if (!$this->validator->isValidPhoneNumber($contactParameters['phoneNumber'])) {
             throw new InvalidPhoneNumberException('Invalid phone number');
@@ -159,5 +160,35 @@ class UserContactsService
         }
 
         return $this->editor->editUserContacts($userContacts, $editedParams);
+    }
+
+    /**
+     * @param $id
+     *
+     * @return UserContacts
+     * @throws NonUniqueResultException
+     * @throws NotExistingUserContactsException
+     */
+    public function getUserContactsById($id): UserContacts
+    {
+        try {
+
+            return $this->repository->getById($id);
+
+        } catch (NoResultException $e) {
+
+            throw new NotExistingUserContactsException('User contact by that id does not exist');
+        }
+    }
+
+    /**
+     * @param int $userId
+     *
+     * @return UserContacts|null
+     * @throws NonUniqueResultException
+     */
+    public function getUserContactsByUserId(int $userId):?UserContacts
+    {
+       return $this->repository->findByUserID($userId);
     }
 }

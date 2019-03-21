@@ -13,6 +13,7 @@ class UserContactsCest
         $I->haveHttpHeader('Accept', '*/*');
         $I->sendPOST('/company/users/2/contacts', ['address' => 'avenue 11', 'phoneNumber' => '+37000']);
         $I->seeInDatabase('user_contacts', ['address' => 'avenue 11', 'phone_number' => '+37000', 'user_id' => '2']);
+        $I->seeResponseEquals('{"id":15,"address":"avenue 11","phoneNumber":"+37000","userId":2}');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::CREATED);
     }
 
@@ -23,6 +24,7 @@ class UserContactsCest
         $I->haveHttpHeader('Accept', '*/*');
         $I->sendPUT('/company/users/2/contacts/15', ['address' => 'avenue 10', 'phoneNumber' => '+37011']);
         $I->seeInDatabase('user_contacts',['address'=>'avenue 10','phone_number'=>'+37011','user_id'=>'2']);
+        $I->seeResponseEquals('{"id":15,"address":"avenue 10","phoneNumber":"+37011","userId":2}');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     }
 
@@ -53,6 +55,18 @@ class UserContactsCest
         $I->haveHttpHeader('Accept', '*/*');
         $I->sendPATCH('/company/users/2/contacts/15', ['address' => 'BestStreet 2']);
         $I->seeInDatabase('user_contacts',['address'=>'BestStreet 2','phone_number'=>'+37000','user_id'=>'2']);
+        $I->seeResponseEquals('{"id":15,"address":"BestStreet 2","phoneNumber":"+37000","userId":2}');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     }
+
+    public function getUserContacts(AcceptanceTester $I):void
+    {
+        $I->haveInDatabase('user_contacts', ['id'=>'15', 'address' => 'WorstStreet 1', 'phone_number' => '+37000', 'user_id' => '2']);
+        $I->haveHttpHeader('Content-type', 'application/problem+json');
+        $I->haveHttpHeader('Accept', '*/*');
+        $I->sendGET('/company/users/2/contacts');
+        $I->seeResponseEquals('{"id":15,"address":"WorstStreet 1","phoneNumber":"+37000","userId":2}');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+    }
+
 }

@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use UserContacts\Entity\UserContacts;
-use UserContacts\Exceptions\NotExistingUserContactsException;
 
 class UserContactsRepository extends EntityRepository
 {
@@ -44,4 +43,5 @@ class UserContactsRepository extends EntityRepository
             ->getQuery()
             ->getSingleResult();
     }
+
 }

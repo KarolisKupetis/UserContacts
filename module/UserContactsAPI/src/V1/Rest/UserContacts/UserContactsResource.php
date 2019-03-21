@@ -2,6 +2,7 @@
 
 namespace UserContactsAPI\V1\Rest\UserContacts;
 
+
 use UserContacts\Service\UserContactsService;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
@@ -27,7 +28,7 @@ class UserContactsResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        $userContactParams['id'] = $this->getEvent()->getRouteMatch()->getParam('userid');
+        $userContactParams['id'] = $this->getEvent()->getRouteMatch()->getParam('id');
         $userContactParams['address'] = $data->address;
         $userContactParams['phoneNumber'] = $data->phoneNumber;
         $newUserContacts = $this->contactsService->createUserContacts($userContactParams);
@@ -84,6 +85,38 @@ class UserContactsResource extends AbstractResourceListener
         $patchedUserContacts = $this->contactsService->updateSeparateUserContactsParams($id, $editedParams);
 
         return UserContactsEntity::fromUserContactsEntity($patchedUserContacts);
+    }
 
+    /**
+     * @param mixed $id
+     *
+     * @return mixed|void|ApiProblem
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \UserContacts\Exceptions\NotExistingUserContactsException
+     */
+    public function fetch($id)
+    {
+        $userId = $this->getEvent()->getRouteMatch()->getParam('id');
+        $userContacts = $this->contactsService->getUserContactsById($id);
+
+        if ($userContacts->getUser()->getId() === (integer)$userId) {
+
+            return UserContactsEntity::fromUserContactsEntity($userContacts);
+        }
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return mixed|UserContactsEntity|ApiProblem
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function fetchAll($params = [])
+    {
+        $userId = $this->getEvent()->getRouteMatch()->getParam('id');
+
+        $userContacts = $this->contactsService->getUserContactsByUserId($userId);
+
+        return UserContactsEntity::fromUserContactsEntity($userContacts);
     }
 }

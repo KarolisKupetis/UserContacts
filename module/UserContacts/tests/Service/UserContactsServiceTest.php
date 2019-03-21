@@ -254,7 +254,6 @@ class UserContactsServiceTest extends TestCase
     }
 
     /**
-     * @throws EmptyAddressException
      * @throws InvalidPhoneNumberException
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException

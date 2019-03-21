@@ -37,7 +37,7 @@ return [
             'user-contacts-api.rest.user-contacts' => [
                 'type' => 'Segment',
                 'options' => [
-                    'route' => '/company/users/:userid/contacts[/:user_contacts_id]',
+                    'route' => '/company/users/:id/contacts[/:user_contacts_id]',
                     'defaults' => [
                         'controller' => 'UserContactsAPI\\V1\\Rest\\UserContacts\\Controller',
                     ],
@@ -60,11 +60,13 @@ return [
                 0 => 'POST',
                 1 => 'PATCH',
                 2 => 'PUT',
+                3 => 'GET',
             ],
             'collection_http_methods' => [
                 0 => 'POST',
                 1 => 'PUT',
                 2 => 'PATCH',
+                3 => 'GET',
             ],
             'collection_query_whitelist' => [],
             'page_size' => 25,

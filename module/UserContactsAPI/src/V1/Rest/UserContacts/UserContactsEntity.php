@@ -11,7 +11,7 @@ class UserContactsEntity
     public $phoneNumber;
     public $userId;
 
-    public static function fromUserContactsEntity(UserContacts $userContacts):UserContactsEntity
+    public static function fromUserContactsEntity(UserContacts $userContacts):self
     {
         $apiEntity = new self();
         $apiEntity->userId = $userContacts->getUser()->getId();
