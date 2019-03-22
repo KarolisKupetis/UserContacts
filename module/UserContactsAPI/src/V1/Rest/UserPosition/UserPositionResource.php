@@ -28,7 +28,7 @@ class UserPositionResource extends AbstractResourceListener
      */
     public function create($data)
     {
-       $positionParams ['userId'] = $data->userId;
+       $positionParams ['userId'] = $this->getEvent()->getRouteMatch()->getParam('id');
        $positionParams ['position'] = $data->position;
 
        $this->positionService->addUserPosition($positionParams);

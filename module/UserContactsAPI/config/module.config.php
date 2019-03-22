@@ -25,7 +25,7 @@ return [
             4 => \UserContacts\Editor\UserContactsEditor::class,
         ],
         \UserContacts\Service\UserPositionService::class => [
-            0 => 'UserService',
+            0 => \User\Service\UserService::class,
             1 => \UserContacts\Validator\UserPositionValidator::class,
             2 => \UserContacts\Creator\UserPositionCreator::class,
         ],
@@ -56,7 +56,7 @@ return [
             'user-contacts-api.rest.user-position' => [
                 'type' => 'Segment',
                 'options' => [
-                    'route' => '/user-position[/:user_position_id]',
+                    'route' => '/company/users/:id/position',
                     'defaults' => [
                         'controller' => 'UserContactsAPI\\V1\\Rest\\UserPosition\\Controller',
                     ],
@@ -245,13 +245,6 @@ return [
                 'filters' => [],
                 'name' => 'position',
                 'description' => 'Name of the position user is responsible for.',
-            ],
-            1 => [
-                'required' => true,
-                'validators' => [],
-                'filters' => [],
-                'name' => 'userId',
-                'description' => '',
             ],
         ],
     ],

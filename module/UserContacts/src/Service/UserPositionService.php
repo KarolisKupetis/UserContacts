@@ -4,6 +4,7 @@ namespace UserContacts\Service;
 
 use User\Service\UserService;
 use UserContacts\Creator\UserPositionCreator;
+use UserContacts\Entity\UserPosition;
 use UserContacts\Exceptions\InvalidUserPositionException;
 use UserContacts\Exceptions\NotExistingUserContactsException;
 use UserContacts\Validator\UserPositionValidator;
@@ -42,7 +43,7 @@ class UserPositionService
      * @throws NotExistingUserContactsException
      * @throws \Exception
      */
-    public function addUserPosition(array $userPositionParams): int
+    public function addUserPosition(array $userPositionParams): UserPosition
     {
         $user = $this->userService->getById($userPositionParams['userId']);
 
