@@ -33,6 +33,7 @@ class UserContactsCreatorTest extends TestCase
     public function testInsertUserContacts(): void
     {
         $user = new User();
+
         $params = ['phoneNumber' => '8666', 'address' => 'Test av. 1'];
         $user->setId(1);
 

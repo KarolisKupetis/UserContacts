@@ -28,7 +28,7 @@ class UserContactsCreator
      * @param User  $user
      * @param array $contactParameters
      *
-     * @return int
+     * @return UserContacts
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -50,7 +50,6 @@ class UserContactsCreator
      */
     private function createUserContactsEntity(User $user, array $contactParameters): UserContacts
     {
-
         $userContacts = new UserContacts();
         $userContacts->setAddress($contactParameters['address']);
         $userContacts->setPhoneNumber($contactParameters['phoneNumber']);

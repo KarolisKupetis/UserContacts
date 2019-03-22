@@ -97,9 +97,8 @@ class UserContacts
     /**
      * @param $phoneNumber
      */
-    public function setPhoneNumber(string $phoneNumber):void
+    public function setPhoneNumber(string $phoneNumber): void
     {
         $this->phoneNumber = $phoneNumber;
     }
-
 }

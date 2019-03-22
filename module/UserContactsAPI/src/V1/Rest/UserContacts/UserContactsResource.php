@@ -88,24 +88,6 @@ class UserContactsResource extends AbstractResourceListener
     }
 
     /**
-     * @param mixed $id
-     *
-     * @return mixed|void|ApiProblem
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \UserContacts\Exceptions\NotExistingUserContactsException
-     */
-    public function fetch($id)
-    {
-        $userId = $this->getEvent()->getRouteMatch()->getParam('id');
-        $userContacts = $this->contactsService->getUserContactsById($id);
-
-        if ($userContacts->getUser()->getId() === (integer)$userId) {
-
-            return UserContactsEntity::fromUserContactsEntity($userContacts);
-        }
-    }
-
-    /**
      * @param array $params
      *
      * @return mixed|UserContactsEntity|ApiProblem

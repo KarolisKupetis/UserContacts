@@ -50,6 +50,7 @@ class AbstractRepositoryFactory implements AbstractFactoryInterface
     {
         /** @var EntityManager $entityManager */
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
+
         $classNameWithNamespace = $this->buildEntityClassName($requestedName);
 
         return $entityManager->getRepository($classNameWithNamespace);

@@ -162,25 +162,6 @@ class UserContactsService
     }
 
     /**
-     * @param $id
-     *
-     * @return UserContacts
-     * @throws NonUniqueResultException
-     * @throws NotExistingUserContactsException
-     */
-    public function getUserContactsById($id): UserContacts
-    {
-        try {
-
-            return $this->repository->getById($id);
-
-        } catch (NoResultException $e) {
-
-            throw new NotExistingUserContactsException('User contact by that id does not exist');
-        }
-    }
-
-    /**
      * @param int $userId
      *
      * @return UserContacts|null
