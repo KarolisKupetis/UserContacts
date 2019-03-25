@@ -2,7 +2,6 @@
 
 namespace UserDetails\Service;
 
-
 use UserDetails\Creator\UserContactsCreator;
 use UserDetails\Editor\UserContactsEditor;
 use UserDetails\Entity\UserContacts;
@@ -14,13 +13,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use UserDetails\Exceptions\EmptyAddressException;
 use UserDetails\Exceptions\ExistingUserContactsException;
 use UserDetails\Exceptions\InvalidPhoneNumberException;
-use UserDetails\Exceptions\NotExistingUserContactsException;
 
-/**
- * Class UserContactsService
- *
- * @package UserContacts\Service
- */
 class UserContactsService
 {
     /**

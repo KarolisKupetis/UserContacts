@@ -270,10 +270,9 @@ class UserContactsServiceTest extends TestCase
     }
 
     /**
-     * @throws InvalidPhoneNumberException
+     * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \UserDetails\Exceptions\NotExistingUserContactsException
      */
     public function testUpdateSeparateUserContactsParams(): void
     {

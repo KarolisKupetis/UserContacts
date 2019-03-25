@@ -35,8 +35,31 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES ('20190315075937','2019-03-15 08:01:29');
+INSERT INTO `migrations` VALUES ('20190315075937','2019-03-25 14:34:00'),('20190322064308','2019-03-25 14:34:00'),('20190322073501','2019-03-25 14:34:00'),('20190325143658','2019-03-25 14:37:03');
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `positions`
+--
+
+DROP TABLE IF EXISTS `positions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `positions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `position` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `positions`
+--
+
+LOCK TABLES `positions` WRITE;
+/*!40000 ALTER TABLE `positions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `positions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -54,7 +77,7 @@ CREATE TABLE `user_contacts` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D3CDF173A76ED395` (`user_id`),
   CONSTRAINT `FK_D3CDF173A76ED395` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -87,8 +110,35 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'John','johny@gmail.com'),(2,'Wicky','wecker@gmail.com');
+INSERT INTO `users` VALUES (1,'johny snoq','john@goh.com'),(2,'wicky wicked','imwicked@gmail.com');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users_position`
+--
+
+DROP TABLE IF EXISTS `users_position`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users_position` (
+  `position_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`position_id`,`user_id`),
+  UNIQUE KEY `UNIQ_3D6DCF2FA76ED395` (`user_id`),
+  KEY `IDX_3D6DCF2FDD842E46` (`position_id`),
+  CONSTRAINT `FK_3D6DCF2FA76ED395` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `FK_3D6DCF2FDD842E46` FOREIGN KEY (`position_id`) REFERENCES `positions` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users_position`
+--
+
+LOCK TABLES `users_position` WRITE;
+/*!40000 ALTER TABLE `users_position` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users_position` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -100,4 +150,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-19  7:51:21
+-- Dump completed on 2019-03-25 16:39:29

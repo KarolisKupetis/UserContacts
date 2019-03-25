@@ -85,7 +85,7 @@ return [
     'zf-content-negotiation' => [
         'controllers' => [
             'UserContactsAPI\\V1\\Rest\\UserContacts\\Controller' => 'Json',
-            'UserContactsAPI\\V1\\Rest\\UserPosition\\Controller' => 'HalJson',
+            'UserContactsAPI\\V1\\Rest\\UserPosition\\Controller' => 'Json',
         ],
         'accept_whitelist' => [
             'UserContactsAPI\\V1\\Rest\\UserContacts\\Controller' => [

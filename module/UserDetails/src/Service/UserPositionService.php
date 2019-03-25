@@ -2,7 +2,6 @@
 
 namespace UserDetails\Service;
 
-use phpDocumentor\Reflection\Types\This;
 use User\Entity\User;
 use User\Service\UserService;
 use UserDetails\Creator\UserPositionCreator;
@@ -29,6 +28,7 @@ class UserPositionService
      * @var UserPositionCreator
      */
     private $userPositionCreator;
+
     /**
      * @var UserPositionRepository
      */
@@ -59,7 +59,9 @@ class UserPositionService
     public function addUserPosition(array $userPositionParams): UserPosition
     {
         $user = $this->userService->getById($userPositionParams['userId']);
+
         $this->validate($user, $userPositionParams['position']);
+
         $position = $this->positionRepository->findByPosition($userPositionParams['position']);
 
         if ($position) {
@@ -70,9 +72,7 @@ class UserPositionService
             return $this->userPositionCreator->addUserToPosition($user, $position);
         }
 
-        $position = $this->userPositionCreator->insertUserPosition($userPositionParams['position']);
-
-        return $this->userPositionCreator->addUserToPosition($user, $position);
+        return $this->createNewPositionWithUser($user,$userPositionParams['position']);
     }
 
     /**
@@ -106,7 +106,21 @@ class UserPositionService
         if (!$isPositionValid) {
             throw new InvalidUserPositionException('Invalid user position');
         }
+    }
 
+    /**
+     * @param User   $user
+     * @param string $positionName
+     *
+     * @return UserPosition
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    private function createNewPositionWithUser(User $user,string $positionName): UserPosition
+    {
+        $position = $this->userPositionCreator->insertUserPosition($positionName);
+
+        return $this->userPositionCreator->addUserToPosition($user, $position);
     }
 
 }

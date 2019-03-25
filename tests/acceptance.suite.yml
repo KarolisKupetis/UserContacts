@@ -11,7 +11,7 @@ modules:
         dsn: 'mysql:host=localhost;port=80;dbname=usercontacts'
         user: 'root'
         password: 'qwer'
-        dump: 'tests/_data/db.dump.sql'
+        dump: 'tests/_data/dbdumpUserContacts.sql'
         populate: true
         cleanup: true
         populator: 'mysql -h $host -u $user --password=qwer $dbname < $dump'
