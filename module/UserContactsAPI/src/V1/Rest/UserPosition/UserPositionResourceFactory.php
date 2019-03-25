@@ -2,7 +2,7 @@
 namespace UserContactsAPI\V1\Rest\UserPosition;
 
 use Psr\Container\ContainerInterface;
-use UserContacts\Service\UserPositionService;
+use UserDetails\Service\UserPositionService;
 
 class UserPositionResourceFactory
 {

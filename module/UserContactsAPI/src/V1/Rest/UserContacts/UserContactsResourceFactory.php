@@ -3,7 +3,7 @@
 namespace UserContactsAPI\V1\Rest\UserContacts;
 
 use Psr\Container\ContainerInterface;
-use UserContacts\Service\UserContactsService;
+use UserDetails\Service\UserContactsService;
 
 class UserContactsResourceFactory
 {

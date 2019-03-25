@@ -26,7 +26,7 @@ return [
     'ZF\\Rest',
     'ZF\\Rpc',
     'ZF\\Versioning',
-    'UserContacts',
+    'UserDetails',
     'DoctrineModule',
     'DoctrineORMModule',
     'Application',

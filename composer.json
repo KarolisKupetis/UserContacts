@@ -61,7 +61,7 @@
     "autoload-dev": {
         "psr-4": {
             "ApplicationTest\\": "module/Application/test/",
-            "UserContacts\\": "module/UserContacts/src/",
+            "UserDetails\\": "module/UserDetails/src/",
             "User\\": "module/User/src/"
         },
         "files": [

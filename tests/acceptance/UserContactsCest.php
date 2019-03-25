@@ -68,5 +68,4 @@ class UserContactsCest
         $I->seeResponseEquals('{"id":15,"address":"WorstStreet 1","phoneNumber":"+37000","userId":2}');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     }
-
 }

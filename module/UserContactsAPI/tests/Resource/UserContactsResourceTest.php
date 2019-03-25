@@ -4,7 +4,7 @@ namespace UserContactsAPI\Resource;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use UserContacts\Service\UserContactsService;
+use UserDetails\Service\UserContactsService;
 use UserContactsAPI\V1\Rest\UserContacts\UserContactsResource;
 use Zend\Router\RouteMatch;
 use ZF\Rest\ResourceEvent;

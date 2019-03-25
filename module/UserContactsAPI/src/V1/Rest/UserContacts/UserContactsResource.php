@@ -3,7 +3,7 @@
 namespace UserContactsAPI\V1\Rest\UserContacts;
 
 
-use UserContacts\Service\UserContactsService;
+use UserDetails\Service\UserContactsService;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 
@@ -43,9 +43,9 @@ class UserContactsResource extends AbstractResourceListener
      * @return mixed|void|ApiProblem
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \UserContacts\Exceptions\EmptyAddressException
-     * @throws \UserContacts\Exceptions\InvalidPhoneNumberException
-     * @throws \UserContacts\Exceptions\NotExistingUserContactsException
+     * @throws \UserDetails\Exceptions\EmptyAddressException
+     * @throws \UserDetails\Exceptions\InvalidPhoneNumberException
+     * @throws \UserDetails\Exceptions\NotExistingUserContactsException
      */
     public function update($id, $data)
     {
@@ -64,8 +64,8 @@ class UserContactsResource extends AbstractResourceListener
      * @return mixed|void|ApiProblem
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \UserContacts\Exceptions\InvalidPhoneNumberException
-     * @throws \UserContacts\Exceptions\NotExistingUserContactsException
+     * @throws \UserDetails\Exceptions\InvalidPhoneNumberException
+     * @throws \UserDetails\Exceptions\NotExistingUserContactsException
      */
     public function patch($id, $data)
     {

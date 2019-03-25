@@ -1,7 +1,7 @@
 <?php
 namespace UserContactsAPI\V1\Rest\UserPosition;
 
-use UserContacts\Service\UserPositionService;
+use UserDetails\Service\UserPositionService;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 
@@ -15,25 +15,26 @@ class UserPositionResource extends AbstractResourceListener
 
     public function __construct(UserPositionService $positionService)
     {
-
         $this->positionService = $positionService;
     }
 
     /**
      * @param mixed $data
      *
-     * @return mixed|void|ApiProblem
-     * @throws \UserContacts\Exceptions\InvalidUserPositionException
-     * @throws \UserContacts\Exceptions\NotExistingUserContactsException
+     * @return array|mixed|ApiProblem
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \UserDetails\Exceptions\InvalidUserPositionException
+     * @throws \UserDetails\Exceptions\NotExistingUserContactsException
      */
     public function create($data)
     {
        $positionParams ['userId'] = $this->getEvent()->getRouteMatch()->getParam('id');
        $positionParams ['position'] = $data->position;
 
-       $this->positionService->addUserPosition($positionParams);
+        $position =  $this->positionService->addUserPosition($positionParams);
 
-       return ['id' =>1];
+       return UserPositionEntity::fromPositionEntity($position);
     }
 
 }

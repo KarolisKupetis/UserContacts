@@ -2,7 +2,7 @@
 
 namespace UserContactsAPI\V1\Rest\UserContacts;
 
-use UserContacts\Entity\UserContacts;
+use UserDetails\Entity\UserContacts;
 
 class UserContactsEntity
 {
@@ -11,7 +11,7 @@ class UserContactsEntity
     public $phoneNumber;
     public $userId;
 
-    public static function fromUserContactsEntity(UserContacts $userContacts):self
+    public static function fromUserContactsEntity(UserContacts $userContacts):UserContactsEntity
     {
         $apiEntity = new self();
         $apiEntity->userId = $userContacts->getUser()->getId();
@@ -21,6 +21,4 @@ class UserContactsEntity
 
         return $apiEntity;
     }
-
-
 }

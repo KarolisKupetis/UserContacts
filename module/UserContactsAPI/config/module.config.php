@@ -1,43 +1,11 @@
 <?php
 return [
-    \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class => [
-        \UserContacts\Validator\UserPositionValidator::class => [],
-        \UserContacts\Validator\UserContactsValidator::class => [],
-        0 => \User\Repository\UserRepository::class,
-        1 => \UserContacts\Repository\UserContactsRepository::class,
-        \UserContacts\Creator\UserContactsCreator::class => [
-            0 => \Doctrine\ORM\EntityManager::class,
-        ],
-        \UserContacts\Editor\UserContactsEditor::class => [
-            0 => \Doctrine\ORM\EntityManager::class,
-        ],
-        \UserContacts\Creator\UserPositionCreator::class => [
-            0 => \Doctrine\ORM\EntityManager::class,
-        ],
-        \User\Service\UserService::class => [
-            0 => \User\Repository\UserRepository::class,
-        ],
-        \UserContacts\Service\UserContactsService::class => [
-            0 => \UserContacts\Repository\UserContactsRepository::class,
-            1 => \UserContacts\Creator\UserContactsCreator::class,
-            2 => \User\Service\UserService::class,
-            3 => \UserContacts\Validator\UserContactsValidator::class,
-            4 => \UserContacts\Editor\UserContactsEditor::class,
-        ],
-        \UserContacts\Service\UserPositionService::class => [
-            0 => \User\Service\UserService::class,
-            1 => \UserContacts\Validator\UserPositionValidator::class,
-            2 => \UserContacts\Creator\UserPositionCreator::class,
-        ],
-    ],
+    \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class => [],
     'service_manager' => [
         'abstract_factories' => [
             0 => \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class,
-            1 => \UserContacts\Repository\AbstractRepositoryFactory::class,
         ],
         'factories' => [
-            \UserContacts\Repository\UserContactsRepository::class => \UserContacts\Repository\AbstractRepositoryFactory::class,
-            \User\Repository\UserRepository::class => \UserContacts\Repository\AbstractRepositoryFactory::class,
             \UserContactsAPI\V1\Rest\UserContacts\UserContactsResource::class => \UserContactsAPI\V1\Rest\UserContacts\UserContactsResourceFactory::class,
             \UserContactsAPI\V1\Rest\UserPosition\UserPositionResource::class => \UserContactsAPI\V1\Rest\UserPosition\UserPositionResourceFactory::class,
         ],
@@ -161,7 +129,7 @@ return [
                 'entity_identifier_name' => 'id',
                 'route_name' => 'user-contacts-api.rest.user-position',
                 'route_identifier_name' => 'user_position_id',
-                'hydrator' => \Zend\Hydrator\ArraySerializable::class,
+                'hydrator' => \Zend\Hydrator\ObjectProperty::class,
             ],
             \UserContactsAPI\V1\Rest\UserPosition\UserPositionCollection::class => [
                 'entity_identifier_name' => 'id',
