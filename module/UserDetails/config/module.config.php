@@ -18,7 +18,6 @@ use UserDetails\Creator\UserPositionCreator;
 use UserDetails\Repository\UserPositionRepository;
 use UserDetails\Validator\UserPositionValidator;
 use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
-use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     ConfigAbstractFactory::class => [
@@ -29,16 +28,17 @@ return [
         UserPositionValidator::class => [],
         EntityManager::class => [],
 
-        UserContactsCreator::class => [
-            EntityManager::class,
-        ],
-
         UserContactsEditor::class => [
             EntityManager::class,
         ],
 
         UserService::class => [
             UserRepository::class,
+        ],
+
+        UserContactsCreator::class => [
+            EntityManager::class,
+            UserService::class,
         ],
 
         UserPositionCreator::class => [
@@ -55,7 +55,6 @@ return [
         UserContactsService::class => [
             UserContactsRepository::class,
             UserContactsCreator::class,
-            UserService::class,
             UserContactsValidator::class,
             UserContactsEditor::class,
         ],

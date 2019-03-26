@@ -7,7 +7,6 @@ use UserDetails\Editor\UserContactsEditor;
 use UserDetails\Entity\UserContacts;
 use UserDetails\Repository\UserContactsRepository;
 use UserDetails\Validator\UserContactsValidator;
-use User\Service\UserService;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\NonUniqueResultException;
 use UserDetails\Exceptions\EmptyAddressException;
@@ -27,11 +26,6 @@ class UserContactsService
     private $creator;
 
     /**
-     * @var UserService
-     */
-    private $userService;
-
-    /**
      * @var UserContactsValidator
      */
     private $validator;
@@ -43,13 +37,11 @@ class UserContactsService
     public function __construct(
         UserContactsRepository $repository,
         UserContactsCreator $creator,
-        UserService $userService,
         UserContactsValidator $validator,
         UserContactsEditor $editor
     ) {
         $this->repository = $repository;
         $this->creator = $creator;
-        $this->userService = $userService;
         $this->validator = $validator;
         $this->editor = $editor;
     }
@@ -75,9 +67,7 @@ class UserContactsService
 
         $this->validate($contactParameters);
 
-        $user = $this->userService->getById($contactParameters['id']);
-
-        return $this->creator->insertUserContacts($user, $contactParameters);
+        return $this->creator->insertUserContacts($contactParameters);
     }
 
     /**
@@ -98,7 +88,6 @@ class UserContactsService
         $this->validate($editedParams);
 
         return $this->editor->editUserContacts($userContacts, $editedParams);
-
     }
 
     /**
@@ -112,7 +101,6 @@ class UserContactsService
      */
     public function updateSeparateUserContactsParams(int $id, array $editedParams): UserContacts
     {
-
         $userContacts = $this->repository->getById($id);
 
         if ($editedParams['phoneNumber'] === '') {
@@ -137,6 +125,12 @@ class UserContactsService
         return $this->repository->findByUserID($userId);
     }
 
+    /**
+     * @param $contactParameters
+     *
+     * @throws EmptyAddressException
+     * @throws InvalidPhoneNumberException
+     */
     private function validate($contactParameters): void
     {
         if (!$this->validator->isValidPhoneNumber($contactParameters['phoneNumber'])) {
