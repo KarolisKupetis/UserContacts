@@ -11,7 +11,6 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\NonUniqueResultException;
 use UserDetails\Exceptions\EmptyAddressException;
 use UserDetails\Exceptions\ExistingUserContactsException;
-use UserDetails\Exceptions\InvalidPhoneNumberException;
 
 class UserContactsService
 {
@@ -29,6 +28,7 @@ class UserContactsService
      * @var UserContactsValidator
      */
     private $validator;
+
     /**
      * @var UserContactsEditor
      */

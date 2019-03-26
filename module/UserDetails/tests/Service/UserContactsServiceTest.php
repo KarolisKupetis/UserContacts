@@ -7,7 +7,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use UserDetails\Editor\UserContactsEditor;
 use UserDetails\Exceptions\EmptyAddressException;
 use UserDetails\Exceptions\ExistingUserContactsException;
-use UserDetails\Exceptions\InvalidPhoneNumberException;
 use UserDetails\Repository\UserContactsRepository;
 use UserDetails\Creator\UserContactsCreator;
 use UserDetails\Validator\UserContactsValidator;
@@ -60,7 +59,7 @@ class UserContactsServiceTest extends TestCase
     /**
      * @throws EmptyAddressException
      * @throws ExistingUserContactsException
-     * @throws InvalidPhoneNumberException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */

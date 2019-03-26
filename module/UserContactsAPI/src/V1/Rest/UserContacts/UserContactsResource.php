@@ -2,7 +2,6 @@
 
 namespace UserContactsAPI\V1\Rest\UserContacts;
 
-
 use UserDetails\Service\UserContactsService;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
@@ -24,15 +23,18 @@ class UserContactsResource extends AbstractResourceListener
      * @param mixed $data
      *
      * @return mixed|UserContactsEntity|ApiProblem
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \UserDetails\Exceptions\EmptyAddressException
      * @throws \UserDetails\Exceptions\ExistingUserContactsException
+     * @throws \UserDetails\Exceptions\InvalidPhoneNumberException
      */
     public function create($data)
     {
         $userContactParams['id'] = $this->getEvent()->getRouteMatch()->getParam('id');
         $userContactParams['address'] = $data->address;
+        $userContactParams['phoneNumbers'] = $data->phoneNumber;
         $newUserContacts = $this->contactsService->createUserContacts($userContactParams);
 
         return UserContactsEntity::fromUserContactsEntity($newUserContacts);

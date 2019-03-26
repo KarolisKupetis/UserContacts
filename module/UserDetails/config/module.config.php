@@ -12,7 +12,9 @@ use UserDetails\Entity\UserPosition;
 use UserDetails\Repository\AbstractRepositoryFactory;
 use UserDetails\Repository\UserContactsRepository;
 use UserDetails\Service\UserContactsService;
+use UserDetails\Service\UserPhoneNumberService;
 use UserDetails\Service\UserPositionService;
+use UserDetails\UserPhoneNumber\UserPhoneNumberCreator;
 use UserDetails\Validator\UserContactsValidator;
 use UserDetails\Creator\UserPositionCreator;
 use UserDetails\Repository\UserPositionRepository;
@@ -39,10 +41,20 @@ return [
         UserContactsCreator::class => [
             EntityManager::class,
             UserService::class,
+            UserPhoneNumberService::class,
         ],
 
         UserPositionCreator::class => [
             EntityManager::class,
+        ],
+
+        UserPhoneNumberCreator::class=>[
+            EntityManager::class,
+        ],
+
+        UserPhoneNumberService::class=>[
+            UserPhoneNumberCreator::class,
+            UserContactsValidator::class,
         ],
 
         UserPositionService::class => [
@@ -57,6 +69,7 @@ return [
             UserContactsCreator::class,
             UserContactsValidator::class,
             UserContactsEditor::class,
+            UserPhoneNumberService::class,
         ],
 
 
