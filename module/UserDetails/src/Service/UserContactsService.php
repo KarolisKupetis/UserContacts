@@ -64,9 +64,13 @@ class UserContactsService
             throw new ExistingUserContactsException('User contacts already exist');
         }
 
-        $this->validate($contactParameters);
+        if (!$this->validator->isValidAddress($contactParameters['address'])) {
+            throw new EmptyAddressException('No address given');
+        }
 
-        return $this->creator->insertUserContacts($contactParameters);
+        $userContacts = $this->creator->insertUserContacts($contactParameters);
+
+        return $this->creator->addPhoneNumbersToUserContacts($contactParameters['phoneNumbers'], $userContacts);
     }
 
     /**
@@ -83,7 +87,9 @@ class UserContactsService
     {
         $userContacts = $this->repository->getById($id);
 
-        $this->validate($editedParams);
+        if (!$this->validator->isValidAddress($editedParams['address'])) {
+            throw new EmptyAddressException('No address given');
+        }
 
         return $this->editor->editUserContacts($userContacts, $editedParams);
     }
@@ -117,17 +123,5 @@ class UserContactsService
     public function getUserContactsByUserId(int $userId): ?UserContacts
     {
         return $this->repository->findByUserID($userId);
-    }
-
-    /**
-     * @param $contactParameters
-     *
-     * @throws EmptyAddressException
-     */
-    private function validate($contactParameters): void
-    {
-        if (!$this->validator->isValidAddress($contactParameters['address'])) {
-            throw new EmptyAddressException('No address given');
-        }
     }
 }

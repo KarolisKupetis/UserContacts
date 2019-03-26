@@ -3,8 +3,6 @@
 
 namespace UserContactsServiceTest\Service;
 
-
-use phpDocumentor\Reflection\Types\This;
 use PHPUnit\Framework\TestCase;
 use User\Entity\User;
 use User\Service\UserService;
@@ -54,12 +52,7 @@ class UserPositionServiceTest extends TestCase
             $this->userPositionValidator, $this->userPositionRepository);
     }
 
-    /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \UserDetails\Exceptions\InvalidUserPositionException
-     * @throws \UserDetails\Exceptions\NotExistingUserContactsException
-     */
+
     public function testAddUserPosition(): void
     {
         $userPositionServiceMock = $this->getMockBuilder(UserPositionService::class)
@@ -198,5 +191,21 @@ class UserPositionServiceTest extends TestCase
         $this->assertEquals($newUserPosition, $userPositionServiceMock->addUserPosition($userPositionParams));
     }
 
+    public function testDoesUserHavePositionTrue(): void
+    {
+        $user = new User();
+        $userPosition = new UserPosition();
+        $userPosition->addUser($user);
+
+        $this->assertTrue($this->userPositionService->doesUserHavePosition($user, $userPosition));
+    }
+
+    public function testDoesUserHavePositionFalse(): void
+    {
+        $user = new User();
+        $userPosition = new UserPosition();
+
+        $this->assertFalse($this->userPositionService->doesUserHavePosition($user, $userPosition));
+    }
 
 }

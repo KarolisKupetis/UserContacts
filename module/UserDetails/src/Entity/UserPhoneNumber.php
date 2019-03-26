@@ -14,7 +14,7 @@ class UserPhoneNumber
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer", name="id")
      * @var int
      */

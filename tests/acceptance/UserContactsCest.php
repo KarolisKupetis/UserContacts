@@ -11,9 +11,9 @@ class UserContactsCest
     {
         $I->haveHttpHeader('Content-type', 'application/problem+json');
         $I->haveHttpHeader('Accept', '*/*');
-        $I->sendPOST('/company/users/2/contacts', ['address' => 'avenue 11']);
+        $I->sendPOST('/company/users/2/contacts', ['address' => 'avenue 11','phoneNumber'=>['+37000']]);
         $I->seeInDatabase('user_contacts', ['address' => 'avenue 11', 'user_id' => '2']);
-        $I->seeResponseEquals('{"id":1,"address":"avenue 11","userId":2}');
+        $I->seeResponseEquals('{"id":1,"address":"avenue 11","userId":2,"phoneNumber":["+37000"]}');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::CREATED);
     }
 
@@ -24,7 +24,7 @@ class UserContactsCest
         $I->haveHttpHeader('Accept', '*/*');
         $I->sendPUT('/company/users/2/contacts/15', ['address' => 'avenue 10']);
         $I->seeInDatabase('user_contacts',['address'=>'avenue 10','user_id'=>'2']);
-        $I->seeResponseEquals('{"id":15,"address":"avenue 10","userId":2}');
+        $I->seeResponseEquals('{"id":15,"address":"avenue 10","userId":2,"phoneNumber":null}');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     }
 
@@ -44,8 +44,8 @@ class UserContactsCest
         $I->haveHttpHeader('Content-type', 'application/problem+json');
         $I->haveHttpHeader('Accept', '*/*');
         $I->sendPATCH('/company/users/2/contacts/15', ['address' => 'BestStreet 2']);
-        $I->seeInDatabase('user_contacts',['address'=>'BestStreet 2','user_id'=>'2']);
-        $I->seeResponseEquals('{"id":15,"address":"BestStreet 2","userId":2}');
+        $I->seeInDatabase('user_contacts',['address'=>'BestStreet 2','user_id'=>'2',]);
+        $I->seeResponseEquals('{"id":15,"address":"BestStreet 2","userId":2,"phoneNumber":null}');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     }
 
@@ -55,7 +55,7 @@ class UserContactsCest
         $I->haveHttpHeader('Content-type', 'application/problem+json');
         $I->haveHttpHeader('Accept', '*/*');
         $I->sendGET('/company/users/2/contacts');
-        $I->seeResponseEquals('{"id":15,"address":"WorstStreet 1","userId":2}');
+        $I->seeResponseEquals('{"id":15,"address":"WorstStreet 1","userId":2,"phoneNumber":null}');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     }
 

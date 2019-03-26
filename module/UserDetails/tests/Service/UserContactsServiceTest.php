@@ -79,8 +79,14 @@ class UserContactsServiceTest extends TestCase
             ->method('insertUserContacts')
             ->willReturn($userContacts);
 
-        $userContactsParam = ['id' => 5, 'address' => 'test', 'phoneNumber' => 8666];
+        $this->userContactsCreator->expects($this->once())
+            ->method('addPhoneNumbersToUserContacts')
+            ->willReturn($userContacts);
+
+        $userContactsParam = ['id' => 5, 'address' => 'test', 'phoneNumbers' => ['+37000']];
+
         $newUserContact = $this->userContactsService->createUserContacts($userContactsParam);
+
         $this->assertEquals(5, $newUserContact->getId());
     }
 
@@ -91,7 +97,7 @@ class UserContactsServiceTest extends TestCase
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function testCreateUserContactsOnDuplicateUserContacts(): void
+    public function testCreateUserContactsExceptionOnDuplicateUserContacts(): void
     {
         $this->userContactsValidator->expects($this->never())
             ->method('isValidAddress')
@@ -166,6 +172,38 @@ class UserContactsServiceTest extends TestCase
         $returnedUserContacts = $this->userContactsService->editUserContacts(5, $editedParams);
 
         $this->assertEquals($returnedUserContacts->getAddress(), $editedParams['address']);
+    }
+
+    /**
+     * @throws EmptyAddressException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function testEditUserContactsExceptionOnEmptyAddress()
+    {
+        $editedParams = ['address' => ''];
+
+        $editedUserContacts = new UserContacts();
+        $editedUserContacts->setAddress($editedParams['address']);
+
+        $this->userContactsRepository->expects($this->once())
+            ->method('getById')
+            ->willReturn(new UserContacts());
+
+        $this->userContactsValidator->expects($this->once())
+            ->method('isValidAddress')
+            ->willReturn(false);
+
+        $this->userContactsEditor->expects($this->never())
+            ->method('editUserContacts');
+
+
+        $this->expectException(EmptyAddressException::class);
+
+        $this->userContactsService->editUserContacts(5, $editedParams);
+
+
     }
 
     /**

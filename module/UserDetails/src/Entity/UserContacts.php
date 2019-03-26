@@ -4,6 +4,7 @@ namespace UserDetails\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use User\Entity\User;
 
 /**
@@ -15,7 +16,7 @@ class UserContacts
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer", name="id")
      * @var int
      */
@@ -43,7 +44,7 @@ class UserContacts
 
     public function __construct()
     {
-        $this->phoneNumbers=new ArrayCollection();
+        $this->phoneNumbers = new ArrayCollection();
     }
 
     /**
@@ -78,10 +79,7 @@ class UserContacts
         $this->address = $address;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getPhoneNumbers(): ArrayCollection
+    public function getPhoneNumbers()
     {
         return $this->phoneNumbers;
     }
@@ -97,7 +95,7 @@ class UserContacts
     /**
      * @param UserPhoneNumber $phoneNumber
      */
-    public function addPhoneNumber(UserPhoneNumber $phoneNumber):void
+    public function addPhoneNumber(UserPhoneNumber $phoneNumber): void
     {
         $this->phoneNumbers->add($phoneNumber);
     }
@@ -117,7 +115,6 @@ class UserContacts
     {
         $this->user = $user;
     }
-
 
 
 }

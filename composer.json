@@ -62,6 +62,7 @@
         "psr-4": {
             "ApplicationTest\\": "module/Application/test/",
             "UserDetails\\": "module/UserDetails/src/",
+            "UserContactsAPI\\":"module/UserContactsAPI/src",
             "User\\": "module/User/src/"
         },
         "files": [

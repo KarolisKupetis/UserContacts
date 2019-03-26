@@ -28,13 +28,13 @@ class UserContactsResource extends AbstractResourceListener
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \UserDetails\Exceptions\EmptyAddressException
      * @throws \UserDetails\Exceptions\ExistingUserContactsException
-     * @throws \UserDetails\Exceptions\InvalidPhoneNumberException
      */
     public function create($data)
     {
         $userContactParams['id'] = $this->getEvent()->getRouteMatch()->getParam('id');
         $userContactParams['address'] = $data->address;
         $userContactParams['phoneNumbers'] = $data->phoneNumber;
+
         $newUserContacts = $this->contactsService->createUserContacts($userContactParams);
 
         return UserContactsEntity::fromUserContactsEntity($newUserContacts);

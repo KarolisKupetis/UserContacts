@@ -72,15 +72,29 @@ class UserContactsCreator
         $userContacts->setAddress($contactParameters['address']);
         $userContacts->setUser($this->userService->getById($contactParameters['id']));
 
-        $phoneNumbers = $contactParameters['phoneNumbers'];
+        return $userContacts;
+    }
 
+    /**
+     * @param array        $phoneNumbers
+     * @param UserContacts $userContacts
+     *
+     * @return UserContacts
+     * @throws ORMException
+     */
+    public function addPhoneNumbersToUserContacts(array $phoneNumbers, UserContacts $userContacts):UserContacts
+    {
         foreach ($phoneNumbers as $number) {
             $userPhoneNumber = $this->phoneNumberService->createUserPhoneNumberEntity($number);
 
             if ($userPhoneNumber) {
                 $userPhoneNumber->setUserContacts($userContacts);
+                $userContacts->addPhoneNumber($userPhoneNumber);
             }
         }
+
+        $this->entityManager->persist($userContacts);
+        $this->entityManager->flush();
 
         return $userContacts;
     }
