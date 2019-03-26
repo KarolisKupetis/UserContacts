@@ -58,7 +58,6 @@ class UserContactsCreator
     {
         $userContacts = new UserContacts();
         $userContacts->setAddress($contactParameters['address']);
-        $userContacts->setPhoneNumber($contactParameters['phoneNumber']);
         $userContacts->setUser($this->userService->getById($contactParameters['id']));
 
         return $userContacts;

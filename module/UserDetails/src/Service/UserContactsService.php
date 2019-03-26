@@ -52,10 +52,9 @@ class UserContactsService
      * @return UserContacts
      * @throws EmptyAddressException
      * @throws ExistingUserContactsException
-     * @throws InvalidPhoneNumberException
+     * @throws NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Exception
      */
     public function createUserContacts(array $contactParameters): UserContacts
     {
@@ -76,7 +75,6 @@ class UserContactsService
      *
      * @return UserContacts
      * @throws EmptyAddressException
-     * @throws InvalidPhoneNumberException
      * @throws NoResultException
      * @throws NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
@@ -103,10 +101,6 @@ class UserContactsService
     {
         $userContacts = $this->repository->getById($id);
 
-        if ($editedParams['phoneNumber'] === '') {
-            $editedParams['phoneNumber'] = $userContacts->getPhoneNumber();
-        }
-
         if ($editedParams['address'] === '') {
             $editedParams['address'] = $userContacts->getAddress();
         }
@@ -129,14 +123,9 @@ class UserContactsService
      * @param $contactParameters
      *
      * @throws EmptyAddressException
-     * @throws InvalidPhoneNumberException
      */
     private function validate($contactParameters): void
     {
-        if (!$this->validator->isValidPhoneNumber($contactParameters['phoneNumber'])) {
-            throw new InvalidPhoneNumberException('Invalid phone number');
-        }
-
         if (!$this->validator->isValidAddress($contactParameters['address'])) {
             throw new EmptyAddressException('No address given');
         }

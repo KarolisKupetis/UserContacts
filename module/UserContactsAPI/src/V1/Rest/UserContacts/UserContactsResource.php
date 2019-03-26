@@ -23,14 +23,16 @@ class UserContactsResource extends AbstractResourceListener
     /**
      * @param mixed $data
      *
-     * @return array|mixed|ApiProblem
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return mixed|UserContactsEntity|ApiProblem
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \UserDetails\Exceptions\EmptyAddressException
+     * @throws \UserDetails\Exceptions\ExistingUserContactsException
      */
     public function create($data)
     {
         $userContactParams['id'] = $this->getEvent()->getRouteMatch()->getParam('id');
         $userContactParams['address'] = $data->address;
-        $userContactParams['phoneNumber'] = $data->phoneNumber;
         $newUserContacts = $this->contactsService->createUserContacts($userContactParams);
 
         return UserContactsEntity::fromUserContactsEntity($newUserContacts);
@@ -40,17 +42,15 @@ class UserContactsResource extends AbstractResourceListener
      * @param mixed $id
      * @param mixed $data
      *
-     * @return mixed|void|ApiProblem
+     * @return mixed|UserContactsEntity|ApiProblem
+     * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
      * @throws \UserDetails\Exceptions\EmptyAddressException
-     * @throws \UserDetails\Exceptions\InvalidPhoneNumberException
-     * @throws \UserDetails\Exceptions\NotExistingUserContactsException
      */
     public function update($id, $data)
     {
         $editedParams['address'] = $data->address;
-        $editedParams['phoneNumber'] = $data->phoneNumber;
 
         $editedUserContacts = $this->contactsService->editUserContacts($id, $editedParams);
 
@@ -61,25 +61,19 @@ class UserContactsResource extends AbstractResourceListener
      * @param mixed $id
      * @param mixed $data
      *
-     * @return mixed|void|ApiProblem
+     * @return mixed|UserContactsEntity|ApiProblem
+     * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \UserDetails\Exceptions\InvalidPhoneNumberException
-     * @throws \UserDetails\Exceptions\NotExistingUserContactsException
      */
     public function patch($id, $data)
     {
         $editedParams = [
             'address' => '',
-            'phoneNumber' => ''
         ];
 
         if (property_exists($data, 'address')) {
             $editedParams['address'] = $data->address;
-        }
-
-        if (property_exists($data, 'phoneNumber')) {
-            $editedParams['phoneNumber'] = $data->phoneNumber;
         }
 
         $patchedUserContacts = $this->contactsService->updateSeparateUserContactsParams($id, $editedParams);

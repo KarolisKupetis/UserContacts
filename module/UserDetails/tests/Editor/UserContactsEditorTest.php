@@ -31,7 +31,7 @@ class UserContactsEditorTest extends TestCase
      */
     public function testEditUserContacts(): void
     {
-        $editedParams = ['phoneNumber' => '+370000', 'address' => 'johns av. 5'];
+        $editedParams = ['address' => 'johns av. 5'];
         $userContacts = new UserContacts();
 
         $this->entityManager->expects($this->once())
@@ -42,7 +42,6 @@ class UserContactsEditorTest extends TestCase
 
         $editedUserContacts = $this->userContactsEditor->editUserContacts($userContacts, $editedParams);
 
-        $this->assertEquals($editedUserContacts->getPhoneNumber(), $editedParams['phoneNumber']);
         $this->assertEquals($editedUserContacts->getAddress(), $editedParams['address']);
     }
 }

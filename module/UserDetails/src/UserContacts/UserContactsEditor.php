@@ -26,7 +26,6 @@ class UserContactsEditor
      */
     public function editUserContacts(UserContacts $userContacts, array $editedParams): UserContacts
     {
-        $userContacts->setPhoneNumber($editedParams['phoneNumber']);
         $userContacts->setAddress($editedParams['address']);
         $this->entityManager->persist($userContacts);
         $this->entityManager->flush();

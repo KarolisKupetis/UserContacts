@@ -2,6 +2,7 @@
 
 namespace UserDetails\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use User\Entity\User;
 
@@ -26,6 +27,7 @@ class UserPosition
     private $position;
 
     /**
+     * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="User\Entity\User")
      * @ORM\JoinTable(name="users_position",
      *     joinColumns={@ORM\JoinColumn(name="position_id",referencedColumnName="id")},
@@ -33,6 +35,14 @@ class UserPosition
      *     )
      */
     private $users;
+
+    /**
+     * UserPosition constructor.
+     */
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     /**
      * @param User $user
@@ -43,7 +53,15 @@ class UserPosition
     }
 
     /**
-     * @return mixed
+     * @param ArrayCollection $users
+     */
+    public function setUsers(ArrayCollection $users): void
+    {
+        $this->users = $users;
+    }
+
+    /**
+     * @return ArrayCollection
      */
     public function getUsers():object
     {

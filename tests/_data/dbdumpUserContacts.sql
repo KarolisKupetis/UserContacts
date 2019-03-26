@@ -35,8 +35,34 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES ('20190315075937','2019-03-25 14:34:00'),('20190322064308','2019-03-25 14:34:00'),('20190322073501','2019-03-25 14:34:00'),('20190325143658','2019-03-25 14:37:03');
+INSERT INTO `migrations` VALUES ('20190315075937','2019-03-25 14:34:00'),('20190322064308','2019-03-25 14:34:00'),('20190322073501','2019-03-25 14:34:00'),('20190325143658','2019-03-25 14:37:03'),('20190326065238','2019-03-26 07:02:30');
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `phone_numbers`
+--
+
+DROP TABLE IF EXISTS `phone_numbers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `phone_numbers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `phone_number` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `userContacts_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_E7DC46CB332F0DCD` (`userContacts_id`),
+  CONSTRAINT `FK_E7DC46CB332F0DCD` FOREIGN KEY (`userContacts_id`) REFERENCES `user_contacts` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `phone_numbers`
+--
+
+LOCK TABLES `phone_numbers` WRITE;
+/*!40000 ALTER TABLE `phone_numbers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `phone_numbers` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -73,7 +99,6 @@ CREATE TABLE `user_contacts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `address` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `phone_number` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D3CDF173A76ED395` (`user_id`),
   CONSTRAINT `FK_D3CDF173A76ED395` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
@@ -150,4 +175,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-25 16:39:29
+-- Dump completed on 2019-03-26  9:04:22

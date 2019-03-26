@@ -2,6 +2,7 @@
 
 namespace UserDetails\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use User\Entity\User;
 
@@ -11,6 +12,7 @@ use User\Entity\User;
  */
 class UserContacts
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -26,10 +28,10 @@ class UserContacts
     private $address;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=256, name="phone_number")
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="UserDetails\Entity\UserPhoneNumber", mappedBy="userContacts")
      */
-    private $phoneNumber;
+    private $phoneNumbers;
 
     /**
      * @var User
@@ -37,6 +39,12 @@ class UserContacts
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
+
+
+    public function __construct()
+    {
+        $this->phoneNumbers=new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -47,27 +55,11 @@ class UserContacts
     }
 
     /**
-     * @param $id
+     * @param int $id
      */
     public function setId(int $id): void
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return User
-     */
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param $user
-     */
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
     }
 
     /**
@@ -79,7 +71,7 @@ class UserContacts
     }
 
     /**
-     * @param $address
+     * @param string $address
      */
     public function setAddress(string $address): void
     {
@@ -87,18 +79,45 @@ class UserContacts
     }
 
     /**
-     * @return string
+     * @return ArrayCollection
      */
-    public function getPhoneNumber(): string
+    public function getPhoneNumbers(): ArrayCollection
     {
-        return $this->phoneNumber;
+        return $this->phoneNumbers;
     }
 
     /**
-     * @param $phoneNumber
+     * @param ArrayCollection $phoneNumbers
      */
-    public function setPhoneNumber(string $phoneNumber): void
+    public function setPhoneNumbers(ArrayCollection $phoneNumbers): void
     {
-        $this->phoneNumber = $phoneNumber;
+        $this->phoneNumbers = $phoneNumbers;
     }
+
+    /**
+     * @param UserPhoneNumber $phoneNumber
+     */
+    public function addPhoneNumber(UserPhoneNumber $phoneNumber):void
+    {
+        $this->phoneNumbers->add($phoneNumber);
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
+    }
+
+
+
 }
