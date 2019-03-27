@@ -55,6 +55,7 @@ class UserContactsService
      * @throws NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \UserDetails\Exceptions\InvalidPhoneNumberException
      */
     public function createUserContacts(array $contactParameters): UserContacts
     {
@@ -122,10 +123,11 @@ class UserContactsService
      * @param int $userId
      *
      * @return UserContacts|null
+     * @throws NoResultException
      * @throws NonUniqueResultException
      */
     public function getUserContactsByUserId(int $userId): ?UserContacts
     {
-        return $this->repository->findByUserId($userId);
+        return $this->repository->getByUserId($userId);
     }
 }

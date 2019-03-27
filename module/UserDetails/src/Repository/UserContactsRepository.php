@@ -44,4 +44,22 @@ class UserContactsRepository extends EntityRepository
             ->getSingleResult();
     }
 
+    /**
+     * @param int $userId
+     *
+     * @return UserContacts|null
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function getByUserId(int $userId): ?UserContacts
+    {
+        $userContacts = $this->createQueryBuilder('u')
+            ->select()
+            ->where('u.user = :id')
+            ->setParameter('id', $userId)
+            ->getQuery()
+            ->getSingleResult();
+
+        return $userContacts;
+    }
 }

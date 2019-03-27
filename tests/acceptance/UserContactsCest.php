@@ -18,15 +18,28 @@ class UserContactsCest
     }
 
 
-    public function patchUserContacts(AcceptanceTester $I):void
+    public function patchUserContactsAddress(AcceptanceTester $I):void
     {
-        $I->haveInDatabase('user_contacts', ['id'=>'15', 'address' => 'WorstStreet 1', 'user_id' => '2']);
         $I->haveInDatabase('user_contacts', ['id'=>'15', 'address' => 'WorstStreet 1', 'user_id' => '2']);
         $I->haveHttpHeader('Content-type', 'application/problem+json');
         $I->haveHttpHeader('Accept', '*/*');
         $I->sendPATCH('/company/users/2/contacts/15', ['address' => 'BestStreet 2']);
         $I->seeInDatabase('user_contacts',['address'=>'BestStreet 2','user_id'=>'2',]);
         $I->seeResponseEquals('{"id":15,"address":"BestStreet 2","userId":2,"phoneNumber":null}');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+    }
+
+
+    public function patchUserContactsPhoneNumbers(AcceptanceTester $I):void
+    {
+        $I->haveInDatabase('user_contacts', ['id'=>'15', 'address' => 'WorstStreet 1', 'user_id' => '2']);
+        $I->haveInDatabase('phone_numbers',['id'=>'1','phone_number'=>'+37005','userContacts_id'=>'15']);
+        $I->haveHttpHeader('Content-type', 'application/problem+json');
+        $I->haveHttpHeader('Accept', '*/*');
+        $I->sendPATCH('/company/users/2/contacts/15', ['address' => 'BestStreet 2','phoneNumber'=>['+37001']]);
+        $I->seeInDatabase('phone_numbers',['id'=>'2','phone_number'=>'+37001','userContacts_id'=>'15']);
+        $I->seeInDatabase('user_contacts',['address'=>'BestStreet 2','user_id'=>'2',]);
+        $I->seeResponseEquals('{"id":15,"address":"BestStreet 2","userId":2,"phoneNumber":["+37001"]}');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     }
 

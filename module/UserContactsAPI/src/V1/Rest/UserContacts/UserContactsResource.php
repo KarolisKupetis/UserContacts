@@ -69,6 +69,7 @@ class UserContactsResource extends AbstractResourceListener
         $patchedUserContacts = $this->contactsService->updateSeparateUserContactsParams($id, $editedParams);
 
         return UserContactsEntity::fromUserContactsEntity($patchedUserContacts);
+
     }
 
     /**

@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class UserPhoneNumber
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")

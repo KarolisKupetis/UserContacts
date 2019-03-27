@@ -45,4 +45,37 @@ class UserPositionCreatorTest extends TestCase
 
         $this->assertEquals(5, $newUserPosition->getId());
     }
+
+    public function testAddPositionToUser(): void
+    {
+        $position = new UserPosition();
+        $user = new User();
+        $position->addUser($user);
+
+        $this->entityManager->expects($this->once())
+            ->method('flush');
+
+        $this->entityManager->expects($this->once())->method('persist');
+
+        $newUserPosition = $this->userPositionCreator->addPositionToUser($user,new UserPosition());
+
+        $this->assertEquals($position, $newUserPosition);
+    }
+
+    public function testRemovePositionFromUser(): void
+    {
+        $position = new UserPosition();
+        $user = new User();
+        $position->addUser($user);
+
+        $this->entityManager->expects($this->once())
+            ->method('flush');
+
+        $this->entityManager->expects($this->once())->method('persist');
+
+        $newPosition = $this->userPositionCreator->removePositionFromUser($user,$position);
+
+        $this->assertEmpty($newPosition->getUsers());
+
+    }
 }

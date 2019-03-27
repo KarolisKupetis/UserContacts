@@ -6,6 +6,7 @@ namespace UserContactsServiceTest\Service;
 
 use PHPUnit\Framework\TestCase;
 use UserDetails\Entity\UserPhoneNumber;
+use UserDetails\Exceptions\InvalidPhoneNumberException;
 use UserDetails\Service\UserPhoneNumberService;
 use UserDetails\UserPhoneNumber\UserPhoneNumberCreator;
 use UserDetails\Validator\UserContactsValidator;
@@ -36,6 +37,7 @@ class UserPhoneNumberServiceTest extends TestCase
     }
 
     /**
+     * @throws InvalidPhoneNumberException
      * @throws \Doctrine\ORM\ORMException
      */
     public function testCreateUserPhoneNumberEntity():void
@@ -54,9 +56,10 @@ class UserPhoneNumberServiceTest extends TestCase
     }
 
     /**
+     * @throws InvalidPhoneNumberException
      * @throws \Doctrine\ORM\ORMException
      */
-    public function testCreateUserPhoneNumberEntityReturnsNullOnInvalidPhoneNumber():void
+    public function testCreateUserPhoneNumberEntityExceptionOnInvalidNumber():void
     {
         $this->userContactsValidator->expects($this->once())
             ->method('isValidPhoneNumber')
@@ -65,7 +68,9 @@ class UserPhoneNumberServiceTest extends TestCase
         $this->userPhoneNumberCreator->expects($this->never())
             ->method('createPhoneNumber');
 
-        $phoneNumber = '+37000';
+        $phoneNumber = '+37';
+
+        $this->expectException(InvalidPhoneNumberException::class);
 
         $this->assertNull($this->userPhoneNumberService->createUserPhoneNumberEntity($phoneNumber));
     }

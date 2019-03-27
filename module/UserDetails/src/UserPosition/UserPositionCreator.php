@@ -68,15 +68,18 @@ class UserPositionCreator
      * @param User         $user
      * @param UserPosition $position
      *
+     * @return UserPosition
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function removePositionFromUser(User $user, UserPosition $position):void
+    public function removePositionFromUser(User $user, UserPosition $position):UserPosition
     {
         $users = $position->getUsers();
         $users->removeElement($user);
         $this->entityManager->persist($position);
         $this->entityManager->flush();
+
+        return $position;
     }
 
 }
