@@ -47,13 +47,11 @@ return [
             'entity_http_methods' => [
                 0 => 'POST',
                 1 => 'PATCH',
-                2 => 'PUT',
             ],
             'collection_http_methods' => [
                 0 => 'POST',
-                1 => 'PUT',
+                1 => 'GET',
                 2 => 'PATCH',
-                3 => 'GET',
             ],
             'collection_query_whitelist' => [],
             'page_size' => 25,

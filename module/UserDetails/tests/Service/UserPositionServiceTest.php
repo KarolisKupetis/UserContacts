@@ -1,6 +1,5 @@
 <?php
 
-
 namespace UserContactsServiceTest\Service;
 
 use PHPUnit\Framework\TestCase;
@@ -8,7 +7,6 @@ use User\Entity\User;
 use User\Service\UserService;
 use UserDetails\Creator\UserPositionCreator;
 use UserDetails\Entity\UserPosition;
-use UserDetails\Exceptions\UserAlreadyHasPositionException;
 use UserDetails\Repository\UserPositionRepository;
 use UserDetails\Service\UserPositionService;
 use UserDetails\Validator\UserPositionValidator;
@@ -55,17 +53,6 @@ class UserPositionServiceTest extends TestCase
 
     public function testAddUserPosition(): void
     {
-        $userPositionServiceMock = $this->getMockBuilder(UserPositionService::class)
-            ->setConstructorArgs(array(
-                $this->userPositionCreator,
-                $this->userService,
-                $this->userPositionValidator,
-                $this->userPositionRepository
-            ))
-            ->setMethods(array('doesUserHavePosition'))
-            ->getMock();
-
-
         $userPositionParams = ['userId' => 1, 'position' => 'CEO'];
 
         $newUserPosition = new UserPosition();
@@ -84,33 +71,25 @@ class UserPositionServiceTest extends TestCase
             ->method('findByPosition')
             ->willReturn($newUserPosition);
 
-        $userPositionServiceMock->expects($this->once())
-            ->method('doesUserHavePosition')
-            ->willReturn(false);
+        $this->userPositionCreator->expects($this->never())
+            ->method('createUserPosition');
 
-        $this->userPositionCreator->expects($this->once())
-            ->method('addUserToPosition')
-            ->willReturn($newUserPosition);
+        $this->userPositionRepository->expects($this->once())
+            ->method('findByUser')
+            ->willReturn(null);
 
         $this->userPositionCreator->expects($this->never())
-            ->method('insertUserPosition');
+            ->method('removePositionFromUser');
 
-        $this->assertEquals($newUserPosition, $userPositionServiceMock->addUserPosition($userPositionParams));
+        $this->userPositionCreator->expects($this->once())
+            ->method('addPositionToUser')
+            ->willReturn($newUserPosition);
+
+        $this->assertEquals($newUserPosition, $this->userPositionService->changeUserPosition($userPositionParams));
     }
 
     public function testAddUserPositionWithoutExistingPosition(): void
     {
-        $userPositionServiceMock = $this->getMockBuilder(UserPositionService::class)
-            ->setConstructorArgs(array(
-                $this->userPositionCreator,
-                $this->userService,
-                $this->userPositionValidator,
-                $this->userPositionRepository
-            ))
-            ->setMethods(array('doesUserHavePosition'))
-            ->getMock();
-
-
         $userPositionParams = ['userId' => 1, 'position' => 'CEO'];
 
         $newUserPosition = new UserPosition();
@@ -129,39 +108,33 @@ class UserPositionServiceTest extends TestCase
             ->method('findByPosition')
             ->willReturn(null);
 
-        $userPositionServiceMock->expects($this->never())
-            ->method('doesUserHavePosition')
-            ->willReturn(false);
-
         $this->userPositionCreator->expects($this->once())
-            ->method('insertUserPosition')
+            ->method('createUserPosition')
             ->willReturn($newUserPosition);
 
+        $this->userPositionRepository->expects($this->once())
+            ->method('findByUser')
+            ->willReturn(null);
+
+        $this->userPositionCreator->expects($this->never())
+            ->method('removePositionFromUser');
+
         $this->userPositionCreator->expects($this->once())
-            ->method('addUserToPosition')
+            ->method('addPositionToUser')
             ->willReturn($newUserPosition);
 
-        $this->assertEquals($newUserPosition, $userPositionServiceMock->addUserPosition($userPositionParams));
+        $this->assertEquals($newUserPosition, $this->userPositionService->changeUserPosition($userPositionParams));
     }
 
-    public function testAddUserPositionDuplicatePositionException(): void
+
+
+    public function testChangeUserPositionUserAlreadyHasPosition(): void
     {
-        $userPositionServiceMock = $this->getMockBuilder(UserPositionService::class)
-            ->setConstructorArgs(array(
-                $this->userPositionCreator,
-                $this->userService,
-                $this->userPositionValidator,
-                $this->userPositionRepository
-            ))
-            ->setMethods(array('doesUserHavePosition'))
-            ->getMock();
-
-
         $userPositionParams = ['userId' => 1, 'position' => 'CEO'];
-
         $newUserPosition = new UserPosition();
         $user = new User();
         $newUserPosition->addUser($user);
+        $existingUserPosition = new UserPosition();
 
         $this->userService->expects($this->once())
             ->method('getById')
@@ -173,39 +146,23 @@ class UserPositionServiceTest extends TestCase
 
         $this->userPositionRepository->expects($this->once())
             ->method('findByPosition')
+            ->willReturn(null);
+
+        $this->userPositionCreator->expects($this->once())
+            ->method('createUserPosition')
             ->willReturn($newUserPosition);
 
-        $userPositionServiceMock->expects($this->once())
-            ->method('doesUserHavePosition')
-            ->willReturn(true);
+        $this->userPositionRepository->expects($this->once())
+            ->method('findByUser')
+            ->willReturn($existingUserPosition);
 
-        $this->userPositionCreator->expects($this->never())
-            ->method('insertUserPosition');
+        $this->userPositionCreator->expects($this->once())
+            ->method('removePositionFromUser');
 
-        $this->userPositionCreator->expects($this->never())
-            ->method('addUserToPosition')
+        $this->userPositionCreator->expects($this->once())
+            ->method('addPositionToUser')
             ->willReturn($newUserPosition);
 
-        $this->expectException(UserAlreadyHasPositionException::class);
-
-        $this->assertEquals($newUserPosition, $userPositionServiceMock->addUserPosition($userPositionParams));
+        $this->assertEquals($newUserPosition, $this->userPositionService->changeUserPosition($userPositionParams));
     }
-
-    public function testDoesUserHavePositionTrue(): void
-    {
-        $user = new User();
-        $userPosition = new UserPosition();
-        $userPosition->addUser($user);
-
-        $this->assertTrue($this->userPositionService->doesUserHavePosition($user, $userPosition));
-    }
-
-    public function testDoesUserHavePositionFalse(): void
-    {
-        $user = new User();
-        $userPosition = new UserPosition();
-
-        $this->assertFalse($this->userPositionService->doesUserHavePosition($user, $userPosition));
-    }
-
 }

@@ -6,10 +6,9 @@ use User\Entity\User;
 use User\Service\UserService;
 use UserDetails\Creator\UserPositionCreator;
 use UserDetails\Entity\UserPosition;
-use UserDetails\Exceptions\UserAlreadyHasPositionException;
+use UserDetails\Exceptions\NotExistingUserException;
 use UserDetails\Validator\UserPositionValidator;
 use UserDetails\Exceptions\InvalidUserPositionException;
-use UserDetails\Exceptions\NotExistingUserContactsException;
 use UserDetails\Repository\UserPositionRepository;
 
 class UserPositionService
@@ -51,54 +50,42 @@ class UserPositionService
      *
      * @return UserPosition
      * @throws InvalidUserPositionException
-     * @throws NotExistingUserContactsException
+     * @throws NotExistingUserException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Exception
      */
-    public function addUserPosition(array $userPositionParams): UserPosition
+    public function changeUserPosition(array $userPositionParams): UserPosition
     {
         $user = $this->userService->getById($userPositionParams['userId']);
-
-        $this->validate($user, $userPositionParams['position']);
-
+        $this->validateUserAndPositionName($user, $userPositionParams['position']);
         $position = $this->positionRepository->findByPosition($userPositionParams['position']);
 
-        if ($position) {
-            if ($this->doesUserHavePosition($user, $position)) {
-                throw new UserAlreadyHasPositionException('User already has position');
-            }
-
-            return $this->userPositionCreator->addUserToPosition($user, $position);
+        if (!$position) {
+            $position = $this->userPositionCreator->createUserPosition($userPositionParams['position']);
         }
 
-        return $this->createNewPositionWithUser($user,$userPositionParams['position']);
+        $userHasPosition = $this->positionRepository->findByUser($user);
+
+        if ($userHasPosition) {
+            $this->userPositionCreator->removePositionFromUser($user, $userHasPosition);
+        }
+
+        return $this->userPositionCreator->addPositionToUser($user, $position);
     }
 
     /**
-     * @param User         $user
-     * @param UserPosition $position
-     *
-     * @return bool
-     */
-    public function doesUserHavePosition(User $user, UserPosition $position): bool
-    {
-        $users = $position->getUsers();
-
-        return $users->contains($user);
-    }
-
-    /**
-     * @param $user
-     * @param $position
+     * @param User   $user
+     * @param string $position
      *
      * @throws InvalidUserPositionException
-     * @throws NotExistingUserContactsException
+     * @throws NotExistingUserException
      */
-    private function validate(User $user, string $position): void
+    private function validateUserAndPositionName(User $user, string $position): void
     {
         if (!$user) {
-            throw new NotExistingUserContactsException('User by that id does not exist');
+            throw new NotExistingUserException('User by that id does not exist');
         }
 
         $isPositionValid = $this->positionValidator->isPositionValid($position);
@@ -107,20 +94,4 @@ class UserPositionService
             throw new InvalidUserPositionException('Invalid user position');
         }
     }
-
-    /**
-     * @param User   $user
-     * @param string $positionName
-     *
-     * @return UserPosition
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    private function createNewPositionWithUser(User $user,string $positionName): UserPosition
-    {
-        $position = $this->userPositionCreator->insertUserPosition($positionName);
-
-        return $this->userPositionCreator->addUserToPosition($user, $position);
-    }
-
 }

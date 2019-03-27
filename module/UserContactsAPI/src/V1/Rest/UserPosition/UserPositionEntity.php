@@ -5,6 +5,7 @@ use UserDetails\Entity\UserPosition;
 
 class UserPositionEntity
 {
+    /** @var int */
     public $id;
     public $position;
 

@@ -7,7 +7,6 @@ use ZF\Rest\AbstractResourceListener;
 
 class UserPositionResource extends AbstractResourceListener
 {
-
     /**
      * @var UserPositionService
      */
@@ -32,9 +31,8 @@ class UserPositionResource extends AbstractResourceListener
        $positionParams ['userId'] = $this->getEvent()->getRouteMatch()->getParam('id');
        $positionParams ['position'] = $data->position;
 
-        $position =  $this->positionService->addUserPosition($positionParams);
+       $position =  $this->positionService->changeUserPosition($positionParams);
 
        return UserPositionEntity::fromPositionEntity($position);
     }
-
 }

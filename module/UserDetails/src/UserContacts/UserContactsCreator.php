@@ -81,6 +81,8 @@ class UserContactsCreator
      *
      * @return UserContacts
      * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws \UserDetails\Exceptions\InvalidPhoneNumberException
      */
     public function addPhoneNumbersToUserContacts(array $phoneNumbers, UserContacts $userContacts):UserContacts
     {

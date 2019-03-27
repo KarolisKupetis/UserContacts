@@ -4,6 +4,7 @@
 namespace UserDetails\Service;
 
 use UserDetails\Entity\UserPhoneNumber;
+use UserDetails\Exceptions\InvalidPhoneNumberException;
 use UserDetails\UserPhoneNumber\UserPhoneNumberCreator;
 use UserDetails\Validator\UserContactsValidator;
 
@@ -24,7 +25,8 @@ class UserPhoneNumberService
     /**
      * @param string $phoneNumber
      *
-     * @return UserPhoneNumber
+     * @return UserPhoneNumber|null
+     * @throws InvalidPhoneNumberException
      * @throws \Doctrine\ORM\ORMException
      */
     public function createUserPhoneNumberEntity(string $phoneNumber): ?UserPhoneNumber
@@ -33,6 +35,6 @@ class UserPhoneNumberService
             return $this->UserPhoneNumberCreator->createPhoneNumber($phoneNumber);
         }
 
-        return null;
+        throw new InvalidPhoneNumberException('Invalid phone number');
     }
 }

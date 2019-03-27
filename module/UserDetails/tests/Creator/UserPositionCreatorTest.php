@@ -27,11 +27,10 @@ class UserPositionCreatorTest extends TestCase
     }
 
 
-    public function testInsertUserPosition(): void
+    public function testCreateUserPosition(): void
     {
-        $user = new User();
         $position = 'CEO';
-        $user->setId(5);
+        $id = 5;
 
         $this->entityManager->expects($this->once())
             ->method('flush');
@@ -42,7 +41,8 @@ class UserPositionCreatorTest extends TestCase
                 return true;
             }));
 
-        $newUserPosition = $this->userPositionCreator->insertUserPosition($position);
+        $newUserPosition = $this->userPositionCreator->createUserPosition($position);
+
         $this->assertEquals(5, $newUserPosition->getId());
     }
 }

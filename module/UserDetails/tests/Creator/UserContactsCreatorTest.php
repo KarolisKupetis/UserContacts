@@ -74,6 +74,8 @@ class UserContactsCreatorTest extends TestCase
 
     /**
      * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \UserDetails\Exceptions\InvalidPhoneNumberException
      */
     public function testAddPhoneNumbersToUserContacts():void
     {

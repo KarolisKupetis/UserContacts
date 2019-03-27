@@ -25,7 +25,7 @@ class UserPositionCreator
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function insertUserPosition(string $positionName): UserPosition
+    public function createUserPosition(string $positionName): UserPosition
     {
         $newUserPosition = $this->createUserPositionEntity($positionName);
         $this->entityManager->persist($newUserPosition);
@@ -55,7 +55,7 @@ class UserPositionCreator
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function addUserToPosition(User $user, UserPosition $position): UserPosition
+    public function addPositionToUser(User $user, UserPosition $position): UserPosition
     {
         $position->addUser($user);
         $this->entityManager->persist($position);
@@ -64,5 +64,19 @@ class UserPositionCreator
         return $position;
     }
 
+    /**
+     * @param User         $user
+     * @param UserPosition $position
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function removePositionFromUser(User $user, UserPosition $position):void
+    {
+        $users = $position->getUsers();
+        $users->removeElement($user);
+        $this->entityManager->persist($position);
+        $this->entityManager->flush();
+    }
 
 }

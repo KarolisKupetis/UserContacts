@@ -2,13 +2,13 @@
 
 namespace UserContactsAPI\V1\Rest\UserContacts;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use UserDetails\Service\UserContactsService;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 
 class UserContactsResource extends AbstractResourceListener
 {
-
     /**
      * @var UserContactsService
      */
@@ -48,34 +48,22 @@ class UserContactsResource extends AbstractResourceListener
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \UserDetails\Exceptions\EmptyAddressException
-     */
-    public function update($id, $data)
-    {
-        $editedParams['address'] = $data->address;
-
-        $editedUserContacts = $this->contactsService->editUserContacts($id, $editedParams);
-
-        return UserContactsEntity::fromUserContactsEntity($editedUserContacts);
-    }
-
-    /**
-     * @param mixed $id
-     * @param mixed $data
-     *
-     * @return mixed|UserContactsEntity|ApiProblem
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \UserDetails\Exceptions\InvalidPhoneNumberException
      */
     public function patch($id, $data)
     {
         $editedParams = [
             'address' => '',
+            'phoneNumber' => new ArrayCollection()
         ];
 
         if (property_exists($data, 'address')) {
             $editedParams['address'] = $data->address;
+        }
+
+        if (property_exists($data, 'phoneNumber')) {
+            $editedParams['phoneNumber'] = $data->phoneNumber;
         }
 
         $patchedUserContacts = $this->contactsService->updateSeparateUserContactsParams($id, $editedParams);

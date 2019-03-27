@@ -15,7 +15,7 @@ class UserContactsRepository extends EntityRepository
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findByUserID(int $userId): ?UserContacts
+    public function findByUserId(int $userId): ?UserContacts
     {
         $userContacts = $this->createQueryBuilder('u')
             ->select()

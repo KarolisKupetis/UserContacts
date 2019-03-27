@@ -3,6 +3,7 @@
 namespace UserDetails\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use User\Entity\User;
@@ -79,15 +80,15 @@ class UserContacts
         $this->address = $address;
     }
 
-    public function getPhoneNumbers()
+    public function getPhoneNumbers():Collection
     {
         return $this->phoneNumbers;
     }
 
     /**
-     * @param ArrayCollection $phoneNumbers
+     * @param Collection $phoneNumbers
      */
-    public function setPhoneNumbers(ArrayCollection $phoneNumbers): void
+    public function setPhoneNumbers(Collection $phoneNumbers): void
     {
         $this->phoneNumbers = $phoneNumbers;
     }

@@ -32,6 +32,7 @@ return [
 
         UserContactsEditor::class => [
             EntityManager::class,
+            UserPhoneNumberService::class,
         ],
 
         UserService::class => [

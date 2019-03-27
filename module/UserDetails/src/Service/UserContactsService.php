@@ -58,7 +58,7 @@ class UserContactsService
      */
     public function createUserContacts(array $contactParameters): UserContacts
     {
-        $contacts = $this->repository->findByUserID($contactParameters['id']);
+        $contacts = $this->repository->findByUserId($contactParameters['id']);
 
         if ($contacts) {
             throw new ExistingUserContactsException('User contacts already exist');
@@ -82,6 +82,8 @@ class UserContactsService
      * @throws NoResultException
      * @throws NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \UserDetails\Exceptions\InvalidPhoneNumberException
      */
     public function editUserContacts(int $id, array $editedParams): UserContacts
     {
@@ -102,6 +104,8 @@ class UserContactsService
      * @throws NoResultException
      * @throws NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \UserDetails\Exceptions\InvalidPhoneNumberException
      */
     public function updateSeparateUserContactsParams(int $id, array $editedParams): UserContacts
     {
@@ -122,6 +126,6 @@ class UserContactsService
      */
     public function getUserContactsByUserId(int $userId): ?UserContacts
     {
-        return $this->repository->findByUserID($userId);
+        return $this->repository->findByUserId($userId);
     }
 }
