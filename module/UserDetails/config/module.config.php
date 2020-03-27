@@ -72,8 +72,6 @@ return [
             UserContactsEditor::class,
             UserPhoneNumberService::class,
         ],
-
-
     ],
     'service_manager' => [
         'abstract_factories' => [
