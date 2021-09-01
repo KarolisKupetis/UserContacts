@@ -46,7 +46,7 @@
         "zfcampus/zf-composer-autoloading": "^1.1.1 || ^2.1",
         "zfcampus/zf-deploy": "^1.3",
         "phpunit/phpunit": "^6",
-        "codeception/codeception": "^2.5"
+        "codeception/codeception": "^3.1"
     },
     "suggest": {
         "zfcampus/zf-apigility-doctrine": "zfcampus/zf-apigility-doctrine ^2.2 to create Doctrine-Connected REST services",
